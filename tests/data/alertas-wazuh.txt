@@ -1,0 +1,1214 @@
+JSON 1:
+{
+  "_index": "wazuh-alerts-4.x-2026.05.29",
+  "_id": "7-kZcZ4BXc9kcgxzK1Ek",
+  "_version": 1,
+  "_score": null,
+  "_source": {
+    "predecoder": {
+      "program_name": "WinEvtLog",
+      "timestamp": "2026 May 28 21:18:50"
+    },
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "192.168.10.100",
+      "name": "WServer2019",
+      "id": "002"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "data": {
+      "extra_data": "Microsoft-Windows-Security-Auditing",
+      "dstuser": "ARCD-DC100$",
+      "subject": {
+        "logon_id": "0x72cf020d",
+        "account_domain": "VECTUS0",
+        "account_name": "ARCD-DC100$",
+        "security_id": "S-1-5-18"
+      },
+      "system_name": "Arcd-dc100.vectus.la",
+      "id": "4634",
+      "type": "Security",
+      "logon_type": "3",
+      "status": "AUDIT_SUCCESS"
+    },
+    "rule": {
+      "firedtimes": 292,
+      "mail": false,
+      "level": 3,
+      "pci_dss": [
+        "10.2.5"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "tsc": [
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "Windows User Logoff.",
+      "groups": [
+        "windows"
+      ],
+      "id": "18149",
+      "nist_800_53": [
+        "AU.14",
+        "AC.7"
+      ],
+      "gdpr": [
+        "IV_32.2"
+      ]
+    },
+    "location": "WinEvtLog",
+    "decoder": {
+      "parent": "windows",
+      "name": "windows"
+    },
+    "id": "1780013932.737538",
+    "full_log": "2026 May 28 21:18:50 WinEvtLog: Security: AUDIT_SUCCESS(4634): Microsoft-Windows-Security-Auditing: ARCD-DC100$: VECTUS0: Arcd-dc100.vectus.la: An account was logged off. Subject:  Security ID:  S-1-5-18  Account Name:  ARCD-DC100$  Account Domain:  VECTUS0  Logon ID:  0x72cf020d  Logon Type:   3  This event is generated when a logon session is destroyed. It may be positively correlated with a logon event using the Logon ID value. Logon IDs are only unique between reboots on the same computer.",
+    "timestamp": "2026-05-29T00:18:52.685+0000"
+  },
+  "fields": {
+    "hour_of_day": [
+      0
+    ],
+    "timestamp": [
+      "2026-05-29T00:18:52.685Z"
+    ],
+    "day_of_week": [
+      "Viernes"
+    ]
+  },
+  "highlight": {
+    "agent.name": [
+      "@opensearch-dashboards-highlighted-field@WServer2019@/opensearch-dashboards-highlighted-field@"
+    ]
+  },
+  "sort": [
+    1780013932685
+  ]
+}
+
+
+JSON 2:
+
+{
+  "_index": "wazuh-alerts-4.x-2026.05.29",
+  "_id": "7ukZcZ4BXc9kcgxzK1Ek",
+  "_version": 1,
+  "_score": null,
+  "_source": {
+    "predecoder": {
+      "program_name": "WinEvtLog",
+      "timestamp": "2026 May 28 21:18:50"
+    },
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "192.168.10.100",
+      "name": "WServer2019",
+      "id": "002"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "data": {
+      "extra_data": "Microsoft-Windows-Security-Auditing",
+      "dstuser": "ARCD-DC100$",
+      "subject": {
+        "logon_id": "0x72cee2d0",
+        "account_domain": "VECTUS0",
+        "account_name": "ARCD-DC100$",
+        "security_id": "S-1-5-18"
+      },
+      "system_name": "Arcd-dc100.vectus.la",
+      "id": "4634",
+      "type": "Security",
+      "logon_type": "3",
+      "status": "AUDIT_SUCCESS"
+    },
+    "rule": {
+      "firedtimes": 291,
+      "mail": false,
+      "level": 3,
+      "pci_dss": [
+        "10.2.5"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "tsc": [
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "Windows User Logoff.",
+      "groups": [
+        "windows"
+      ],
+      "id": "18149",
+      "nist_800_53": [
+        "AU.14",
+        "AC.7"
+      ],
+      "gdpr": [
+        "IV_32.2"
+      ]
+    },
+    "location": "WinEvtLog",
+    "decoder": {
+      "parent": "windows",
+      "name": "windows"
+    },
+    "id": "1780013932.736620",
+    "full_log": "2026 May 28 21:18:50 WinEvtLog: Security: AUDIT_SUCCESS(4634): Microsoft-Windows-Security-Auditing: ARCD-DC100$: VECTUS0: Arcd-dc100.vectus.la: An account was logged off. Subject:  Security ID:  S-1-5-18  Account Name:  ARCD-DC100$  Account Domain:  VECTUS0  Logon ID:  0x72cee2d0  Logon Type:   3  This event is generated when a logon session is destroyed. It may be positively correlated with a logon event using the Logon ID value. Logon IDs are only unique between reboots on the same computer.",
+    "timestamp": "2026-05-29T00:18:52.657+0000"
+  },
+  "fields": {
+    "hour_of_day": [
+      0
+    ],
+    "timestamp": [
+      "2026-05-29T00:18:52.657Z"
+    ],
+    "day_of_week": [
+      "Viernes"
+    ]
+  },
+  "highlight": {
+    "agent.name": [
+      "@opensearch-dashboards-highlighted-field@WServer2019@/opensearch-dashboards-highlighted-field@"
+    ]
+  },
+  "sort": [
+    1780013932657
+  ]
+}
+
+JSON 3:
+{
+  "_index": "wazuh-alerts-4.x-2026.04.27",
+  "_id": "Iaxe0J0BpYUHf9W6pXLX",
+  "_version": 1,
+  "_score": null,
+  "_source": {
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "192.168.10.17",
+      "name": "Forti-EMS",
+      "id": "007"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "rule": {
+      "firedtimes": 1,
+      "mail": false,
+      "level": 3,
+      "pci_dss": [
+        "10.6.1",
+        "10.2.6"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "tsc": [
+        "CC7.2",
+        "CC7.3",
+        "CC6.8"
+      ],
+      "description": "Wazuh agent disconnected.",
+      "groups": [
+        "ossec"
+      ],
+      "id": "504",
+      "nist_800_53": [
+        "AU.6",
+        "AU.14",
+        "AU.5"
+      ],
+      "gpg13": [
+        "10.1"
+      ],
+      "gdpr": [
+        "IV_35.7.d"
+      ]
+    },
+    "location": "wazuh-monitord",
+    "decoder": {
+      "name": "ossec"
+    },
+    "id": "1777317353.75716180",
+    "full_log": "ossec: Agent disconnected: 'Forti-EMS-any'.",
+    "timestamp": "2026-04-27T19:15:53.712+0000"
+  },
+  "fields": {
+    "hour_of_day": [
+      19
+    ],
+    "timestamp": [
+      "2026-04-27T19:15:53.712Z"
+    ],
+    "day_of_week": [
+      "Lunes"
+    ]
+  },
+  "highlight": {
+    "agent.name": [
+      "@opensearch-dashboards-highlighted-field@Forti-EMS@/opensearch-dashboards-highlighted-field@"
+    ]
+  },
+  "sort": [
+    1777317353712
+  ]
+}
+
+JSON 4:
+{
+  "_index": "wazuh-alerts-4.x-2026.04.27",
+  "_id": "pqxT0J0BpYUHf9W6s3Ck",
+  "_version": 1,
+  "_score": null,
+  "_source": {
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "192.168.10.17",
+      "name": "Forti-EMS",
+      "id": "007"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "data": {
+      "win": {
+        "eventdata": {
+          "subjectLogonId": "0x3e7",
+          "subjectDomainName": "VECTUS0",
+          "targetLinkedLogonId": "0x0",
+          "impersonationLevel": "%%1833",
+          "authenticationPackageName": "Negotiate",
+          "targetLogonId": "0x3e7",
+          "logonProcessName": "Advapi",
+          "logonGuid": "{00000000-0000-0000-0000-000000000000}",
+          "targetUserName": "SYSTEM",
+          "keyLength": "0",
+          "elevatedToken": "%%1842",
+          "subjectUserSid": "S-1-5-18",
+          "processId": "0x298",
+          "processName": "C:\\\\Windows\\\\System32\\\\services.exe",
+          "targetDomainName": "NT AUTHORITY",
+          "targetUserSid": "S-1-5-18",
+          "virtualAccount": "%%1843",
+          "logonType": "5",
+          "subjectUserName": "FORTICLIENT-EMS$"
+        },
+        "system": {
+          "eventID": "4624",
+          "keywords": "0x8020000000000000",
+          "providerGuid": "{54849625-5478-4994-a5ba-3e3b0328c30d}",
+          "level": "0",
+          "channel": "Security",
+          "opcode": "0",
+          "message": "\"Se inició sesión correctamente en una cuenta.\r\n\r\nFirmante:\r\n\tId. de seguridad:\t\tS-1-5-18\r\n\tNombre de cuenta:\t\tFORTICLIENT-EMS$\r\n\tDominio de cuenta:\t\tVECTUS0\r\n\tId. de inicio de sesión:\t\t0x3E7\r\n\r\nInformación de inicio de sesión:\r\n\tTipo de inicio de sesión:\t\t5\r\n\tModo de administrador restringido:\t-\r\n\tCuenta virtual:\t\tNo\r\n\tToken elevado:\t\tSí\r\n\r\nNivel de suplantación:\t\tSuplantación\r\n\r\nNuevo inicio de sesión:\r\n\tId. de seguridad:\t\tS-1-5-18\r\n\tNombre de cuenta:\t\tSYSTEM\r\n\tDominio de cuenta:\t\tNT AUTHORITY\r\n\tId. de inicio de sesión:\t\t0x3E7\r\n\tInicio de sesión vinculado:\t\t0x0\r\n\tNombre de cuenta de red:\t-\r\n\tDominio de cuenta de red:\t-\r\n\tGUID de inicio de sesión:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nInformación de proceso:\r\n\tId. de proceso:\t\t0x298\r\n\tNombre de proceso:\t\tC:\\Windows\\System32\\services.exe\r\n\r\nInformación de red:\r\n\tNombre de estación de trabajo:\t-\r\n\tDirección de red de origen:\t-\r\n\tPuerto de origen:\t\t-\r\n\r\nInformación de autenticación detallada:\r\n\tProceso de inicio de sesión:\t\tAdvapi  \r\n\tPaquete de autenticación:\tNegotiate\r\n\tServicios transitados:\t-\r\n\tNombre de paquete (solo NTLM):\t-\r\n\tLongitud de clave:\t\t0\r\n\r\nEste evento se genera cuando se crea una sesión de inicio. Lo genera el equipo al que se tuvo acceso.\r\n\r\nLos campos de firmante indican la cuenta del sistema local que solicitó el inicio de sesión. Suele ser un servicio como el servicio de servidor o un proceso local como Winlogon.exe o Services.exe.\r\n\r\nEl campo Tipo de inicio de sesión indica la clase de inicio de sesión que se realizó. Los tipos más comunes son 2 (interactivo) y 3 (red).\r\n\r\nLos campos Nuevo inicio de sesión indican la cuenta para la que se creó el nuevo inicio de sesión, es decir, aquella en la que se inició la sesión.\r\n\r\nLos campos de red indican dónde se originó una solicitud de inicio de sesión remota. Nombre de estación de trabajo no está siempre disponible y se puede dejar en blanco en algunos casos.\r\n\r\nEl campo de nivel de suplantación indica en qué medida un proceso en la sesión de inicio de sesión puede suplantar.\r\n\r\nLos campos de información de autenticación proporcionan información detallada sobre esta solicitud de inicio de sesión específica.\r\n\t- GUID de inicio de sesión es un identificador único que se puede usar para correlacionar este evento con un evento KDC.\r\n\t- Servicios transitados indica los servicios intermedios que participaron en esta solicitud de inicio de sesión.\r\n\t- Nombre de paquete indica el subprotocolo que se usó entre los protocolos NTLM.\r\n\t- Longitud de clave indica la longitud de la clave de sesión generada. Será 0 si no se solicitó una clave de sesión.\"",
+          "version": "2",
+          "systemTime": "2026-04-27T18:55:38.235436100Z",
+          "eventRecordID": "93705477",
+          "threadID": "5200",
+          "computer": "FortiClient-EMS.vectus.la",
+          "task": "12544",
+          "processID": "684",
+          "severityValue": "AUDIT_SUCCESS",
+          "providerName": "Microsoft-Windows-Security-Auditing"
+        }
+      }
+    },
+    "rule": {
+      "firedtimes": 11,
+      "mail": false,
+      "level": 3,
+      "pci_dss": [
+        "10.2.5"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "tsc": [
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "Windows Logon Success",
+      "groups": [
+        "windows",
+        "windows_security",
+        "authentication_success"
+      ],
+      "id": "60106",
+      "nist_800_53": [
+        "AU.14",
+        "AC.9"
+      ],
+      "gpg13": [
+        "7.1",
+        "7.2"
+      ],
+      "gdpr": [
+        "IV_32.2"
+      ]
+    },
+    "location": "EventChannel",
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "id": "1777316637.74123993",
+    "timestamp": "2026-04-27T19:03:57.602+0000"
+  },
+  "fields": {
+    "hour_of_day": [
+      19
+    ],
+    "timestamp": [
+      "2026-04-27T19:03:57.602Z"
+    ],
+    "day_of_week": [
+      "Lunes"
+    ]
+  },
+  "highlight": {
+    "agent.name": [
+      "@opensearch-dashboards-highlighted-field@Forti-EMS@/opensearch-dashboards-highlighted-field@"
+    ]
+  },
+  "sort": [
+    1777316637602
+  ]
+}
+
+JSON 5:
+{
+  "_index": "wazuh-alerts-4.x-2026.05.28",
+  "_id": "Gun8cJ4BXc9kcgxzLU7V",
+  "_version": 1,
+  "_score": null,
+  "_source": {
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "192.168.10.50",
+      "name": "VectusBckp",
+      "id": "012"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "data": {
+      "win": {
+        "eventdata": {
+          "subjectLogonId": "0x3e7",
+          "subjectDomainName": "VECTUS0",
+          "targetLinkedLogonId": "0x0",
+          "impersonationLevel": "%%1833",
+          "authenticationPackageName": "Negotiate",
+          "targetLogonId": "0x3e7",
+          "logonProcessName": "Advapi",
+          "logonGuid": "{00000000-0000-0000-0000-000000000000}",
+          "targetUserName": "SYSTEM",
+          "keyLength": "0",
+          "elevatedToken": "%%1842",
+          "subjectUserSid": "S-1-5-18",
+          "processId": "0x28c",
+          "processName": "C:\\\\Windows\\\\System32\\\\services.exe",
+          "targetDomainName": "NT AUTHORITY",
+          "targetUserSid": "S-1-5-18",
+          "virtualAccount": "%%1843",
+          "logonType": "5",
+          "subjectUserName": "VECTUSBKP$"
+        },
+        "system": {
+          "eventID": "4624",
+          "keywords": "0x8020000000000000",
+          "providerGuid": "{54849625-5478-4994-a5ba-3e3b0328c30d}",
+          "level": "0",
+          "channel": "Security",
+          "opcode": "0",
+          "message": "\"Se inició sesión correctamente en una cuenta.\r\n\r\nFirmante:\r\n\tId. de seguridad:\t\tS-1-5-18\r\n\tNombre de cuenta:\t\tVECTUSBKP$\r\n\tDominio de cuenta:\t\tVECTUS0\r\n\tId. de inicio de sesión:\t\t0x3E7\r\n\r\nInformación de inicio de sesión:\r\n\tTipo de inicio de sesión:\t\t5\r\n\tModo de administrador restringido:\t-\r\n\tCuenta virtual:\t\tNo\r\n\tToken elevado:\t\tSí\r\n\r\nNivel de suplantación:\t\tSuplantación\r\n\r\nNuevo inicio de sesión:\r\n\tId. de seguridad:\t\tS-1-5-18\r\n\tNombre de cuenta:\t\tSYSTEM\r\n\tDominio de cuenta:\t\tNT AUTHORITY\r\n\tId. de inicio de sesión:\t\t0x3E7\r\n\tInicio de sesión vinculado:\t\t0x0\r\n\tNombre de cuenta de red:\t-\r\n\tDominio de cuenta de red:\t-\r\n\tGUID de inicio de sesión:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nInformación de proceso:\r\n\tId. de proceso:\t\t0x28c\r\n\tNombre de proceso:\t\tC:\\Windows\\System32\\services.exe\r\n\r\nInformación de red:\r\n\tNombre de estación de trabajo:\t-\r\n\tDirección de red de origen:\t-\r\n\tPuerto de origen:\t\t-\r\n\r\nInformación de autenticación detallada:\r\n\tProceso de inicio de sesión:\t\tAdvapi  \r\n\tPaquete de autenticación:\tNegotiate\r\n\tServicios transitados:\t-\r\n\tNombre de paquete (solo NTLM):\t-\r\n\tLongitud de clave:\t\t0\r\n\r\nEste evento se genera cuando se crea una sesión de inicio. Lo genera el equipo al que se tuvo acceso.\r\n\r\nLos campos de firmante indican la cuenta del sistema local que solicitó el inicio de sesión. Suele ser un servicio como el servicio de servidor o un proceso local como Winlogon.exe o Services.exe.\r\n\r\nEl campo Tipo de inicio de sesión indica la clase de inicio de sesión que se realizó. Los tipos más comunes son 2 (interactivo) y 3 (red).\r\n\r\nLos campos Nuevo inicio de sesión indican la cuenta para la que se creó el nuevo inicio de sesión, es decir, aquella en la que se inició la sesión.\r\n\r\nLos campos de red indican dónde se originó una solicitud de inicio de sesión remota. Nombre de estación de trabajo no está siempre disponible y se puede dejar en blanco en algunos casos.\r\n\r\nEl campo de nivel de suplantación indica en qué medida un proceso en la sesión de inicio de sesión puede suplantar.\r\n\r\nLos campos de información de autenticación proporcionan información detallada sobre esta solicitud de inicio de sesión específica.\r\n\t- GUID de inicio de sesión es un identificador único que se puede usar para correlacionar este evento con un evento KDC.\r\n\t- Servicios transitados indica los servicios intermedios que participaron en esta solicitud de inicio de sesión.\r\n\t- Nombre de paquete indica el subprotocolo que se usó entre los protocolos NTLM.\r\n\t- Longitud de clave indica la longitud de la clave de sesión generada. Será 0 si no se solicitó una clave de sesión.\"",
+          "version": "2",
+          "systemTime": "2026-05-28T23:47:13.018441500Z",
+          "eventRecordID": "971333",
+          "threadID": "6204",
+          "computer": "vectusbkp.vectus.la",
+          "task": "12544",
+          "processID": "672",
+          "severityValue": "AUDIT_SUCCESS",
+          "providerName": "Microsoft-Windows-Security-Auditing"
+        }
+      }
+    },
+    "rule": {
+      "firedtimes": 5,
+      "mail": false,
+      "level": 3,
+      "pci_dss": [
+        "10.2.5"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "tsc": [
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "Windows Logon Success",
+      "groups": [
+        "windows",
+        "windows_security",
+        "authentication_success"
+      ],
+      "id": "60106",
+      "nist_800_53": [
+        "AU.14",
+        "AC.9"
+      ],
+      "gpg13": [
+        "7.1",
+        "7.2"
+      ],
+      "gdpr": [
+        "IV_32.2"
+      ]
+    },
+    "location": "EventChannel",
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "id": "1780012033.64785139",
+    "timestamp": "2026-05-28T23:47:13.365+0000"
+  },
+  "fields": {
+    "hour_of_day": [
+      23
+    ],
+    "timestamp": [
+      "2026-05-28T23:47:13.365Z"
+    ],
+    "day_of_week": [
+      "Jueves"
+    ]
+  },
+  "highlight": {
+    "agent.name": [
+      "@opensearch-dashboards-highlighted-field@VectusBckp@/opensearch-dashboards-highlighted-field@"
+    ]
+  },
+  "sort": [
+    1780012033365
+  ]
+}
+
+JSON 6:
+{
+  "_index": "wazuh-alerts-4.x-2026.05.28",
+  "_id": "N-nFcJ4BXc9kcgxzJkcg",
+  "_version": 1,
+  "_score": null,
+  "_source": {
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "192.168.10.50",
+      "name": "VectusBckp",
+      "id": "012"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "data": {
+      "win": {
+        "eventdata": {
+          "subjectLogonId": "0x3e7",
+          "subjectDomainName": "VECTUS0",
+          "targetLinkedLogonId": "0x0",
+          "impersonationLevel": "%%1833",
+          "authenticationPackageName": "Negotiate",
+          "targetLogonId": "0x3e7",
+          "logonProcessName": "Advapi",
+          "logonGuid": "{00000000-0000-0000-0000-000000000000}",
+          "targetUserName": "SYSTEM",
+          "keyLength": "0",
+          "elevatedToken": "%%1842",
+          "subjectUserSid": "S-1-5-18",
+          "processId": "0x28c",
+          "processName": "C:\\\\Windows\\\\System32\\\\services.exe",
+          "targetDomainName": "NT AUTHORITY",
+          "targetUserSid": "S-1-5-18",
+          "virtualAccount": "%%1843",
+          "logonType": "5",
+          "subjectUserName": "VECTUSBKP$"
+        },
+        "system": {
+          "eventID": "4624",
+          "keywords": "0x8020000000000000",
+          "providerGuid": "{54849625-5478-4994-a5ba-3e3b0328c30d}",
+          "level": "0",
+          "channel": "Security",
+          "opcode": "0",
+          "message": "\"Se inició sesión correctamente en una cuenta.\r\n\r\nFirmante:\r\n\tId. de seguridad:\t\tS-1-5-18\r\n\tNombre de cuenta:\t\tVECTUSBKP$\r\n\tDominio de cuenta:\t\tVECTUS0\r\n\tId. de inicio de sesión:\t\t0x3E7\r\n\r\nInformación de inicio de sesión:\r\n\tTipo de inicio de sesión:\t\t5\r\n\tModo de administrador restringido:\t-\r\n\tCuenta virtual:\t\tNo\r\n\tToken elevado:\t\tSí\r\n\r\nNivel de suplantación:\t\tSuplantación\r\n\r\nNuevo inicio de sesión:\r\n\tId. de seguridad:\t\tS-1-5-18\r\n\tNombre de cuenta:\t\tSYSTEM\r\n\tDominio de cuenta:\t\tNT AUTHORITY\r\n\tId. de inicio de sesión:\t\t0x3E7\r\n\tInicio de sesión vinculado:\t\t0x0\r\n\tNombre de cuenta de red:\t-\r\n\tDominio de cuenta de red:\t-\r\n\tGUID de inicio de sesión:\t\t{00000000-0000-0000-0000-000000000000}\r\n\r\nInformación de proceso:\r\n\tId. de proceso:\t\t0x28c\r\n\tNombre de proceso:\t\tC:\\Windows\\System32\\services.exe\r\n\r\nInformación de red:\r\n\tNombre de estación de trabajo:\t-\r\n\tDirección de red de origen:\t-\r\n\tPuerto de origen:\t\t-\r\n\r\nInformación de autenticación detallada:\r\n\tProceso de inicio de sesión:\t\tAdvapi  \r\n\tPaquete de autenticación:\tNegotiate\r\n\tServicios transitados:\t-\r\n\tNombre de paquete (solo NTLM):\t-\r\n\tLongitud de clave:\t\t0\r\n\r\nEste evento se genera cuando se crea una sesión de inicio. Lo genera el equipo al que se tuvo acceso.\r\n\r\nLos campos de firmante indican la cuenta del sistema local que solicitó el inicio de sesión. Suele ser un servicio como el servicio de servidor o un proceso local como Winlogon.exe o Services.exe.\r\n\r\nEl campo Tipo de inicio de sesión indica la clase de inicio de sesión que se realizó. Los tipos más comunes son 2 (interactivo) y 3 (red).\r\n\r\nLos campos Nuevo inicio de sesión indican la cuenta para la que se creó el nuevo inicio de sesión, es decir, aquella en la que se inició la sesión.\r\n\r\nLos campos de red indican dónde se originó una solicitud de inicio de sesión remota. Nombre de estación de trabajo no está siempre disponible y se puede dejar en blanco en algunos casos.\r\n\r\nEl campo de nivel de suplantación indica en qué medida un proceso en la sesión de inicio de sesión puede suplantar.\r\n\r\nLos campos de información de autenticación proporcionan información detallada sobre esta solicitud de inicio de sesión específica.\r\n\t- GUID de inicio de sesión es un identificador único que se puede usar para correlacionar este evento con un evento KDC.\r\n\t- Servicios transitados indica los servicios intermedios que participaron en esta solicitud de inicio de sesión.\r\n\t- Nombre de paquete indica el subprotocolo que se usó entre los protocolos NTLM.\r\n\t- Longitud de clave indica la longitud de la clave de sesión generada. Será 0 si no se solicitó una clave de sesión.\"",
+          "version": "2",
+          "systemTime": "2026-05-28T22:47:05.404246700Z",
+          "eventRecordID": "971308",
+          "threadID": "10796",
+          "computer": "vectusbkp.vectus.la",
+          "task": "12544",
+          "processID": "672",
+          "severityValue": "AUDIT_SUCCESS",
+          "providerName": "Microsoft-Windows-Security-Auditing"
+        }
+      }
+    },
+    "rule": {
+      "firedtimes": 4,
+      "mail": false,
+      "level": 3,
+      "pci_dss": [
+        "10.2.5"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "tsc": [
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "Windows Logon Success",
+      "groups": [
+        "windows",
+        "windows_security",
+        "authentication_success"
+      ],
+      "id": "60106",
+      "nist_800_53": [
+        "AU.14",
+        "AC.9"
+      ],
+      "gpg13": [
+        "7.1",
+        "7.2"
+      ],
+      "gdpr": [
+        "IV_32.2"
+      ]
+    },
+    "location": "EventChannel",
+    "decoder": {
+      "name": "windows_eventchannel"
+    },
+    "id": "1780008425.62621807",
+    "timestamp": "2026-05-28T22:47:05.665+0000"
+  },
+  "fields": {
+    "hour_of_day": [
+      22
+    ],
+    "timestamp": [
+      "2026-05-28T22:47:05.665Z"
+    ],
+    "day_of_week": [
+      "Jueves"
+    ]
+  },
+  "highlight": {
+    "agent.name": [
+      "@opensearch-dashboards-highlighted-field@VectusBckp@/opensearch-dashboards-highlighted-field@"
+    ]
+  },
+  "sort": [
+    1780008425665
+  ]
+}
+
+
+JSON 7:
+
+{
+  "_index": "wazuh-alerts-4.x-2026.05.28",
+  "_id": "hukKb54BXc9kcgxzhgTT",
+  "_version": 1,
+  "_score": null,
+  "_source": {
+    "predecoder": {
+      "hostname": "wazuh",
+      "program_name": "kernel",
+      "timestamp": "May 28 14:43:36"
+    },
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "name": "wazuh",
+      "id": "000"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "data": {
+      "extra_data": "mknod",
+      "status": "DENIED"
+    },
+    "rule": {
+      "firedtimes": 9,
+      "mail": false,
+      "level": 4,
+      "pci_dss": [
+        "10.2.7",
+        "10.6.1"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "tsc": [
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "Apparmor DENIED mknod operation.",
+      "groups": [
+        "local",
+        "syslog",
+        "apparmor"
+      ],
+      "id": "52004",
+      "nist_800_53": [
+        "AU.14",
+        "AU.6"
+      ],
+      "gdpr": [
+        "IV_35.7.d"
+      ]
+    },
+    "location": "journald",
+    "decoder": {
+      "parent": "kernel",
+      "name": "kernel"
+    },
+    "id": "1779979418.41709963",
+    "full_log": "May 28 14:43:36 wazuh kernel: audit: type=1400 audit(1779979416.701:6122): apparmor=\"DENIED\" operation=\"mknod\" class=\"file\" profile=\"ubuntu_pro_esm_cache\" name=\"/usr/lib/python3/dist-packages/uaclient/messages/__pycache__/urls.cpython-312.pyc.126102096199216\" pid=2174130 comm=\"python3\" requested_mask=\"c\" denied_mask=\"c\" fsuid=0 ouid=0",
+    "timestamp": "2026-05-28T14:43:38.651+0000"
+  },
+  "fields": {
+    "hour_of_day": [
+      14
+    ],
+    "timestamp": [
+      "2026-05-28T14:43:38.651Z"
+    ],
+    "day_of_week": [
+      "Jueves"
+    ]
+  },
+  "highlight": {
+    "agent.name": [
+      "@opensearch-dashboards-highlighted-field@wazuh@/opensearch-dashboards-highlighted-field@"
+    ]
+  },
+  "sort": [
+    1779979418651
+  ]
+}
+
+
+JSON 8:
+{
+  "_index": "wazuh-alerts-4.x-2026.05.28",
+  "_id": "fukKb54BXc9kcgxzhgTT",
+  "_version": 1,
+  "_score": null,
+  "_source": {
+    "predecoder": {
+      "hostname": "wazuh",
+      "program_name": "kernel",
+      "timestamp": "May 28 14:43:36"
+    },
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "name": "wazuh",
+      "id": "000"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "data": {
+      "extra_data": "mknod",
+      "status": "DENIED"
+    },
+    "rule": {
+      "firedtimes": 1,
+      "mail": false,
+      "level": 4,
+      "pci_dss": [
+        "10.2.7",
+        "10.6.1"
+      ],
+      "hipaa": [
+        "164.312.b"
+      ],
+      "tsc": [
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "Apparmor DENIED mknod operation.",
+      "groups": [
+        "local",
+        "syslog",
+        "apparmor"
+      ],
+      "id": "52004",
+      "nist_800_53": [
+        "AU.14",
+        "AU.6"
+      ],
+      "gdpr": [
+        "IV_35.7.d"
+      ]
+    },
+    "location": "journald",
+    "decoder": {
+      "parent": "kernel",
+      "name": "kernel"
+    },
+    "id": "1779979416.41705081",
+    "full_log": "May 28 14:43:36 wazuh kernel: audit: type=1400 audit(1779979416.593:6117): apparmor=\"DENIED\" operation=\"mknod\" class=\"file\" profile=\"ubuntu_pro_esm_cache\" name=\"/usr/lib/python3/dist-packages/uaclient/__pycache__/defaults.cpython-312.pyc.126102097172528\" pid=2174130 comm=\"python3\" requested_mask=\"c\" denied_mask=\"c\" fsuid=0 ouid=0",
+    "timestamp": "2026-05-28T14:43:36.660+0000"
+  },
+  "fields": {
+    "hour_of_day": [
+      14
+    ],
+    "timestamp": [
+      "2026-05-28T14:43:36.660Z"
+    ],
+    "day_of_week": [
+      "Jueves"
+    ]
+  },
+  "highlight": {
+    "agent.name": [
+      "@opensearch-dashboards-highlighted-field@wazuh@/opensearch-dashboards-highlighted-field@"
+    ]
+  },
+  "sort": [
+    1779979416660
+  ]
+}
+
+
+JSON 9:
+{
+  "_index": "wazuh-alerts-4.x-2026.05.28",
+  "_id": "4OnhcJ4BXc9kcgxzx0ox",
+  "_version": 1,
+  "_score": null,
+  "_source": {
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "192.168.10.10",
+      "name": "Reverse-Proxy",
+      "id": "008"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "data": {
+      "file": "/etc/apache2/ssl/private_helpdesk_la.key",
+      "title": "File is owned by root and has written permissions to anyone."
+    },
+    "rule": {
+      "firedtimes": 1,
+      "mail": false,
+      "level": 7,
+      "pci_dss": [
+        "10.6.1"
+      ],
+      "description": "Host-based anomaly detection event (rootcheck).",
+      "groups": [
+        "ossec",
+        "rootcheck"
+      ],
+      "id": "510",
+      "gdpr": [
+        "IV_35.7.d"
+      ]
+    },
+    "location": "rootcheck",
+    "decoder": {
+      "name": "rootcheck"
+    },
+    "id": "1780010299.63765603",
+    "full_log": "File '/etc/apache2/ssl/private_helpdesk_la.key' is owned by root and has written permissions to anyone.",
+    "timestamp": "2026-05-28T23:18:19.315+0000"
+  },
+  "fields": {
+    "hour_of_day": [
+      23
+    ],
+    "timestamp": [
+      "2026-05-28T23:18:19.315Z"
+    ],
+    "day_of_week": [
+      "Jueves"
+    ]
+  },
+  "highlight": {
+    "agent.name": [
+      "@opensearch-dashboards-highlighted-field@Reverse-Proxy@/opensearch-dashboards-highlighted-field@"
+    ]
+  },
+  "sort": [
+    1780010299315
+  ]
+}
+
+JSON 10:
+
+{
+  "_index": "wazuh-alerts-4.x-2026.05.28",
+  "_id": "2enhcJ4BXc9kcgxzfEry",
+  "_version": 1,
+  "_score": null,
+  "_source": {
+    "syscheck": {
+      "uname_after": "root",
+      "mtime_after": "2025-11-14T12:51:46",
+      "inode_before": 1054753,
+      "size_after": "465",
+      "gid_after": "0",
+      "mode": "scheduled",
+      "path": "/etc/apache2/sites-available/assessment-ccm307-com-mx.conf",
+      "sha1_after": "788922d80ebcee99e376e0bc543de0d5a50ed096",
+      "changed_attributes": [
+        "inode"
+      ],
+      "gname_after": "root",
+      "uid_after": "0",
+      "perm_after": "rw-r--r--",
+      "event": "modified",
+      "md5_after": "cf3703f7d8b8a2e34cae8ef436af6958",
+      "sha256_after": "9ced7256b5141a14b826f47d874e51459733a22fb2766f8bd7cde35f166e7608",
+      "inode_after": 1054717
+    },
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "192.168.10.10",
+      "name": "Reverse-Proxy",
+      "id": "008"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "rule": {
+      "firedtimes": 10,
+      "mail": false,
+      "level": 7,
+      "pci_dss": [
+        "11.5"
+      ],
+      "hipaa": [
+        "164.312.c.1",
+        "164.312.c.2"
+      ],
+      "tsc": [
+        "PI1.4",
+        "PI1.5",
+        "CC6.1",
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "Integrity checksum changed.",
+      "groups": [
+        "ossec",
+        "syscheck",
+        "syscheck_entry_modified",
+        "syscheck_file"
+      ],
+      "id": "550",
+      "nist_800_53": [
+        "SI.7"
+      ],
+      "gpg13": [
+        "4.11"
+      ],
+      "gdpr": [
+        "II_5.1.f"
+      ]
+    },
+    "location": "syscheck",
+    "decoder": {
+      "name": "syscheck_integrity_changed"
+    },
+    "id": "1780010284.63759734",
+    "full_log": "File '/etc/apache2/sites-available/assessment-ccm307-com-mx.conf' modified\nMode: scheduled\nChanged attributes: inode\nOld inode was: '1054753', now it is '1054717'\n",
+    "timestamp": "2026-05-28T23:18:04.566+0000"
+  },
+  "fields": {
+    "syscheck.mtime_after": [
+      "2025-11-14T12:51:46.000Z"
+    ],
+    "hour_of_day": [
+      23
+    ],
+    "timestamp": [
+      "2026-05-28T23:18:04.566Z"
+    ],
+    "day_of_week": [
+      "Jueves"
+    ]
+  },
+  "highlight": {
+    "agent.name": [
+      "@opensearch-dashboards-highlighted-field@Reverse-Proxy@/opensearch-dashboards-highlighted-field@"
+    ]
+  },
+  "sort": [
+    1780010284566
+  ]
+}
+
+JSON 11:
+{
+  "_index": "wazuh-alerts-4.x-2026.05.22",
+  "_id": "O60PTp4Bb5ixHczJmu-n",
+  "_version": 1,
+  "_score": null,
+  "_source": {
+    "syscheck": {
+      "uname_after": "root",
+      "mtime_after": "2026-03-14T18:49:43",
+      "size_after": "40",
+      "gid_after": "0",
+      "mode": "scheduled",
+      "path": "/etc/systemd/system/snapd.mounts.target.wants/snap-lxd-38450.mount",
+      "sha1_after": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+      "gname_after": "root",
+      "uid_after": "0",
+      "perm_after": "rwxrwxrwx",
+      "event": "deleted",
+      "md5_after": "d41d8cd98f00b204e9800998ecf8427e",
+      "sha256_after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "inode_after": 3671055
+    },
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "192.168.10.233",
+      "name": "Passbolt",
+      "id": "009"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "rule": {
+      "firedtimes": 3,
+      "mail": false,
+      "level": 7,
+      "pci_dss": [
+        "11.5"
+      ],
+      "hipaa": [
+        "164.312.c.1",
+        "164.312.c.2"
+      ],
+      "tsc": [
+        "PI1.4",
+        "PI1.5",
+        "CC6.1",
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "File deleted.",
+      "groups": [
+        "ossec",
+        "syscheck",
+        "syscheck_entry_deleted",
+        "syscheck_file"
+      ],
+      "id": "553",
+      "nist_800_53": [
+        "SI.7"
+      ],
+      "gpg13": [
+        "4.11"
+      ],
+      "gdpr": [
+        "II_5.1.f"
+      ]
+    },
+    "location": "syscheck",
+    "decoder": {
+      "name": "syscheck_deleted"
+    },
+    "id": "1779426103.8529915",
+    "full_log": "File '/etc/systemd/system/snapd.mounts.target.wants/snap-lxd-38450.mount' deleted\nMode: scheduled\n",
+    "timestamp": "2026-05-22T05:01:43.606+0000"
+  },
+  "fields": {
+    "syscheck.mtime_after": [
+      "2026-03-14T18:49:43.000Z"
+    ],
+    "hour_of_day": [
+      5
+    ],
+    "timestamp": [
+      "2026-05-22T05:01:43.606Z"
+    ],
+    "day_of_week": [
+      "Viernes"
+    ]
+  },
+  "highlight": {
+    "agent.name": [
+      "@opensearch-dashboards-highlighted-field@Passbolt@/opensearch-dashboards-highlighted-field@"
+    ]
+  },
+  "sort": [
+    1779426103606
+  ]
+}
+
+
+JSON 12:
+{
+  "_index": "wazuh-alerts-4.x-2026.05.22",
+  "_id": "Ja0PTp4Bb5ixHczJXO8j",
+  "_version": 1,
+  "_score": null,
+  "_source": {
+    "syscheck": {
+      "uname_after": "root",
+      "mtime_after": "2026-05-22T00:28:42",
+      "size_after": "345",
+      "gid_after": "0",
+      "md5_before": "7172f163acab623f2edda4acf8cf9460",
+      "sha256_before": "f6422bd8540c0507061a8c98013565b3b8b8c73ef38f2f2d6b6e57607af550d6",
+      "mtime_before": "2026-04-13T09:21:50",
+      "mode": "scheduled",
+      "path": "/etc/systemd/system/snap.lxd.user-daemon.unix.socket",
+      "sha1_after": "76cd254b1d5504ded3214ab8889e355354d324b8",
+      "changed_attributes": [
+        "mtime",
+        "md5",
+        "sha1",
+        "sha256"
+      ],
+      "gname_after": "root",
+      "uid_after": "0",
+      "perm_after": "rw-r--r--",
+      "event": "modified",
+      "md5_after": "22a63e0b199bf0450a6fbedf30fe1706",
+      "sha1_before": "e68acc7c0ab8456a2b31475a2819cc75bffd901d",
+      "sha256_after": "03ba96eefa2c2da67713c4cc4c9ba1fba87a31bdb0e4da0620a4550fd3f48f89",
+      "inode_after": 3671160
+    },
+    "input": {
+      "type": "log"
+    },
+    "agent": {
+      "ip": "192.168.10.233",
+      "name": "Passbolt",
+      "id": "009"
+    },
+    "manager": {
+      "name": "wazuh"
+    },
+    "rule": {
+      "firedtimes": 7,
+      "mail": false,
+      "level": 7,
+      "pci_dss": [
+        "11.5"
+      ],
+      "hipaa": [
+        "164.312.c.1",
+        "164.312.c.2"
+      ],
+      "tsc": [
+        "PI1.4",
+        "PI1.5",
+        "CC6.1",
+        "CC6.8",
+        "CC7.2",
+        "CC7.3"
+      ],
+      "description": "Integrity checksum changed.",
+      "groups": [
+        "ossec",
+        "syscheck",
+        "syscheck_entry_modified",
+        "syscheck_file"
+      ],
+      "id": "550",
+      "nist_800_53": [
+        "SI.7"
+      ],
+      "gpg13": [
+        "4.11"
+      ],
+      "gdpr": [
+        "II_5.1.f"
+      ]
+    },
+    "location": "syscheck",
+    "decoder": {
+      "name": "syscheck_integrity_changed"
+    },
+    "id": "1779426088.8507857",
+    "full_log": "File '/etc/systemd/system/snap.lxd.user-daemon.unix.socket' modified\nMode: scheduled\nChanged attributes: mtime,md5,sha1,sha256\nOld modification time was: '1776072110', now it is '1779409722'\nOld md5sum was: '7172f163acab623f2edda4acf8cf9460'\nNew md5sum is : '22a63e0b199bf0450a6fbedf30fe1706'\nOld sha1sum was: 'e68acc7c0ab8456a2b31475a2819cc75bffd901d'\nNew sha1sum is : '76cd254b1d5504ded3214ab8889e355354d324b8'\nOld sha256sum was: 'f6422bd8540c0507061a8c98013565b3b8b8c73ef38f2f2d6b6e57607af550d6'\nNew sha256sum is : '03ba96eefa2c2da67713c4cc4c9ba1fba87a31bdb0e4da0620a4550fd3f48f89'\n",
+    "timestamp": "2026-05-22T05:01:28.367+0000"
+  },
+  "fields": {
+    "syscheck.mtime_after": [
+      "2026-05-22T00:28:42.000Z"
+    ],
+    "syscheck.mtime_before": [
+      "2026-04-13T09:21:50.000Z"
+    ],
+    "hour_of_day": [
+      5
+    ],
+    "timestamp": [
+      "2026-05-22T05:01:28.367Z"
+    ],
+    "day_of_week": [
+      "Viernes"
+    ]
+  },
+  "highlight": {
+    "agent.name": [
+      "@opensearch-dashboards-highlighted-field@Passbolt@/opensearch-dashboards-highlighted-field@"
+    ]
+  },
+  "sort": [
+    1779426088367
+  ]
+}

@@ -1,0 +1,23 @@
+# Vectus SOC Engine — despliegue con `docker compose up --build -d`
+services:
+  vectus-engine:
+    build: .
+    container_name: vectus-soc-engine
+    restart: unless-stopped
+    ports:
+      - "8003:8003"
+    env_file:
+      - .env
+    environment:
+      - DATA_DIR=/data
+    volumes:
+      - vectus-data:/data          # SQLite persistente (ChromaDB se suma en Fase 2)
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8003/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  vectus-data:
