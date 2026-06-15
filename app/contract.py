@@ -64,6 +64,7 @@ class AlertResult(BaseModel):
     asset: str = ""                      # agente/host afectado
     title: str = ""                      # título del caso en TheHive
     case_description: str = ""           # CAMPO CENTRAL: relato técnico del triage
+    correlation_summary: str = ""        # relato humano del patrón histórico (para el analista)
     key_observable: str = ""             # el observable más relevante
     key_factors: list[str] = Field(default_factory=list)
     next_steps: list[str] = Field(default_factory=list)

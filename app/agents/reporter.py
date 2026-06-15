@@ -145,6 +145,80 @@ def _sources_paragraph(enrichment: dict, baseline_block: dict,
     return " ".join(parts)
 
 
+def _fmt_fecha(iso: str) -> str:
+    """Convierte un timestamp ISO a un formato legible para el analista."""
+    if not iso:
+        return "fecha desconocida"
+    try:
+        dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
+        return dt.strftime("%d/%m/%Y %H:%M UTC")
+    except (ValueError, AttributeError):
+        return iso
+
+
+def build_correlation_summary(correlation: dict) -> str:
+    """
+    Genera un relato en lenguaje natural del patrón histórico, pensado
+    para que el analista entienda de un vistazo si la alerta es un evento
+    aislado o parte de algo recurrente. Siempre devuelve texto.
+    """
+    status = correlation.get("status", "")
+    if status == "skipped_curated_rule":
+        return "Correlación no evaluada: la alerta se resolvió por una regla curada de certeza."
+    if status != "done":
+        return "Correlación no disponible para esta alerta."
+
+    related = correlation.get("related", [])
+    rc = correlation.get("related_count", len(related))
+
+    if not rc:
+        return ("Evento aislado: no se encontraron alertas relacionadas con este "
+                "activo u observable en la ventana temporal analizada. No hay "
+                "indicios de un patrón previo.")
+
+    razones = {}
+    for r in related:
+        motivo = r.get("reason", "vínculo no especificado")
+        razones.setdefault(motivo, []).append(r)
+
+    lineas = []
+    lineas.append(
+        f"\u26a0 PATRÓN RECURRENTE: esta alerta NO es un evento aislado. Se detectaron "
+        f"{rc} alerta(s) relacionada(s) en la ventana temporal."
+    )
+
+    eventos = sorted(related, key=lambda x: x.get("created_at", ""))
+    for r in eventos[:5]:
+        fecha = _fmt_fecha(r.get("created_at", ""))
+        veredicto = r.get("verdict", "sin veredicto")
+        motivo = r.get("reason", "")
+        lineas.append(f"  \u2022 {fecha} — {veredicto} ({motivo})")
+
+    if len(eventos) > 5:
+        lineas.append(f"  \u2022 … y {len(eventos) - 5} más.")
+
+    veredictos_previos = [r.get("verdict") for r in related]
+    tp_previos = veredictos_previos.count("true_positive")
+    if tp_previos >= 2:
+        lineas.append(
+            "Interpretación: la repetición de positivos confirmados sobre el mismo "
+            "objetivo sugiere una campaña sostenida, no un intento puntual. Se "
+            "recomienda priorizar la contención y revisar la cadena completa de eventos."
+        )
+    elif tp_previos == 1:
+        lineas.append(
+            "Interpretación: ya hubo al menos un positivo confirmado relacionado. "
+            "Conviene revisar si se trata de la misma actividad en curso."
+        )
+    else:
+        lineas.append(
+            "Interpretación: hay actividad relacionada previa, aún sin confirmar como "
+            "maliciosa. Útil como contexto para la investigación."
+        )
+
+    return "\n".join(lineas)
+
+
 def _build_description_template(normalized: dict, decision: Decision,
                                 classification: str, signature_count: int,
                                 enrichment: dict, baseline_block: dict,
@@ -234,6 +308,7 @@ def build_result(alert_id: str, normalized: dict, decision: Decision,
         asset=normalized["asset"],
         title=_short_title(normalized, decision),
         case_description=case_description,
+        correlation_summary=build_correlation_summary(correlation_block),
         key_observable=_pick_key_observable(normalized),
         key_factors=key_factors,
         next_steps=next_steps,
