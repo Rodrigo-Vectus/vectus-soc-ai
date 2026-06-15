@@ -161,6 +161,7 @@ def build_correlation_summary(correlation: dict) -> str:
     Genera un relato en lenguaje natural del patrón histórico, pensado
     para que el analista entienda de un vistazo si la alerta es un evento
     aislado o parte de algo recurrente. Siempre devuelve texto.
+    Formato Markdown para que TheHive lo renderice prolijo.
     """
     status = correlation.get("status", "")
     if status == "skipped_curated_rule":
@@ -172,51 +173,46 @@ def build_correlation_summary(correlation: dict) -> str:
     rc = correlation.get("related_count", len(related))
 
     if not rc:
-        return ("Evento aislado: no se encontraron alertas relacionadas con este "
+        return ("**Evento aislado:** no se encontraron alertas relacionadas con este "
                 "activo u observable en la ventana temporal analizada. No hay "
                 "indicios de un patrón previo.")
 
-    razones = {}
-    for r in related:
-        motivo = r.get("reason", "vínculo no especificado")
-        razones.setdefault(motivo, []).append(r)
-
-    lineas = []
-    lineas.append(
-        f"\u26a0 PATRÓN RECURRENTE: esta alerta NO es un evento aislado. Se detectaron "
-        f"{rc} alerta(s) relacionada(s) en la ventana temporal."
+    encabezado = (
+        f"**⚠ PATRÓN RECURRENTE**: esta alerta NO es un evento aislado. "
+        f"Se detectaron **{rc} alerta(s) relacionada(s)** en la ventana temporal:"
     )
 
     eventos = sorted(related, key=lambda x: x.get("created_at", ""))
+    items = []
     for r in eventos[:5]:
         fecha = _fmt_fecha(r.get("created_at", ""))
         veredicto = r.get("verdict", "sin veredicto")
         motivo = r.get("reason", "")
-        lineas.append(f"  \u2022 {fecha} — {veredicto} ({motivo})")
-
+        items.append(f"- `{fecha}` — **{veredicto}** ({motivo})")
     if len(eventos) > 5:
-        lineas.append(f"  \u2022 … y {len(eventos) - 5} más.")
+        items.append(f"- … y {len(eventos) - 5} más.")
+    lista = "\n".join(items)
 
     veredictos_previos = [r.get("verdict") for r in related]
     tp_previos = veredictos_previos.count("true_positive")
     if tp_previos >= 2:
-        lineas.append(
-            "Interpretación: la repetición de positivos confirmados sobre el mismo "
+        interpretacion = (
+            "**Interpretación:** la repetición de positivos confirmados sobre el mismo "
             "objetivo sugiere una campaña sostenida, no un intento puntual. Se "
             "recomienda priorizar la contención y revisar la cadena completa de eventos."
         )
     elif tp_previos == 1:
-        lineas.append(
-            "Interpretación: ya hubo al menos un positivo confirmado relacionado. "
+        interpretacion = (
+            "**Interpretación:** ya hubo al menos un positivo confirmado relacionado. "
             "Conviene revisar si se trata de la misma actividad en curso."
         )
     else:
-        lineas.append(
-            "Interpretación: hay actividad relacionada previa, aún sin confirmar como "
+        interpretacion = (
+            "**Interpretación:** hay actividad relacionada previa, aún sin confirmar como "
             "maliciosa. Útil como contexto para la investigación."
         )
 
-    return "\n".join(lineas)
+    return encabezado + "\n\n" + lista + "\n\n" + interpretacion
 
 
 def _build_description_template(normalized: dict, decision: Decision,
