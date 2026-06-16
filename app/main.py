@@ -22,10 +22,31 @@ from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import JSONResponse
 
 from app import config, db, pipeline
+from app.agents import baseline
 
 logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s %(name)s %(levelname)s %(message)s")
 logger = logging.getLogger("vectus.api")
+
+
+async def _cleanup_loop():
+    """Corre la limpieza de retencion periodicamente, en background."""
+    interval = config.CLEANUP_INTERVAL_HOURS * 3600
+    while True:
+        try:
+            await asyncio.sleep(interval)
+            resumen = db.cleanup(
+                retain_raw_days=config.RETAIN_RAW_DAYS,
+                retain_sig_events_days=config.RETAIN_SIGNATURE_EVENTS_DAYS,
+                retain_correlations_days=config.RETAIN_CORRELATIONS_DAYS,
+                retain_history_versions=config.RETAIN_RESULT_HISTORY_VERSIONS,
+            )
+            resumen["vectores"] = baseline.prune_old_vectors(config.RETAIN_VECTORS_DAYS)
+            logger.info("limpieza automatica completada: %s", resumen)
+        except asyncio.CancelledError:
+            break
+        except Exception as exc:                              # noqa: BLE001
+            logger.warning("limpieza automatica fallo: %s", exc)
 
 
 @asynccontextmanager
@@ -34,7 +55,13 @@ async def lifespan(_app: FastAPI):
     requeued = await pipeline.requeue_orphans()   # [F3] ninguna alerta se pierde
     logger.info("%s %s iniciado (DB: %s, huérfanas reencoladas: %d)",
                 config.APP_NAME, config.APP_VERSION, config.DB_PATH, requeued)
+    cleanup_task = None
+    if config.CLEANUP_ENABLED:
+        cleanup_task = asyncio.create_task(_cleanup_loop())
+        logger.info("limpieza automatica activada: cada %dh", config.CLEANUP_INTERVAL_HOURS)
     yield
+    if cleanup_task:
+        cleanup_task.cancel()
 
 
 app = FastAPI(title=config.APP_NAME, version=config.APP_VERSION,
@@ -236,3 +263,18 @@ async def stats(x_api_key: str | None = Header(default=None)):
     """Métricas operativas para tablero: veredictos, fuentes, caché, supresiones."""
     _check_auth(x_api_key)
     return JSONResponse(status_code=200, content=db.stats())
+
+
+
+@app.post("/api/maintenance/cleanup")
+async def maintenance_cleanup(x_api_key: str | None = Header(default=None)):
+    """Dispara la limpieza de retencion a demanda (la misma del scheduler)."""
+    _check_auth(x_api_key)
+    resumen = db.cleanup(
+        retain_raw_days=config.RETAIN_RAW_DAYS,
+        retain_sig_events_days=config.RETAIN_SIGNATURE_EVENTS_DAYS,
+        retain_correlations_days=config.RETAIN_CORRELATIONS_DAYS,
+        retain_history_versions=config.RETAIN_RESULT_HISTORY_VERSIONS,
+    )
+    resumen["vectores"] = baseline.prune_old_vectors(config.RETAIN_VECTORS_DAYS)
+    return JSONResponse(status_code=200, content=resumen)

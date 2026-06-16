@@ -610,3 +610,63 @@ def stats() -> dict:
         "behavior_signatures": signatures,
         "active_suppressions": active_supp,
     }
+
+
+
+def cleanup(retain_raw_days: int, retain_sig_events_days: int,
+            retain_correlations_days: int, retain_history_versions: int) -> dict:
+    """
+    Limpieza de retencion para que la DB no crezca sin limite. Devuelve un
+    resumen de cuanto se limpio. NUNCA toca behavior_signatures ni suppressions.
+    """
+    now = datetime.now(timezone.utc)
+    raw_cutoff = (now - timedelta(days=retain_raw_days)).isoformat()
+    sig_cutoff = (now - timedelta(days=retain_sig_events_days)).isoformat()
+    corr_cutoff = (now - timedelta(days=retain_correlations_days)).isoformat()
+
+    resumen = {}
+    conn = get_conn()
+    with _lock:
+        cur = conn.execute(
+            "UPDATE alerts SET raw_json=NULL "
+            "WHERE created_at < ? AND raw_json IS NOT NULL",
+            (raw_cutoff,),
+        )
+        resumen["raw_json_vaciados"] = cur.rowcount
+
+        cur = conn.execute(
+            "DELETE FROM signature_events WHERE created_at < ?", (sig_cutoff,))
+        resumen["signature_events_borrados"] = cur.rowcount
+
+        cache_cutoff = (now - timedelta(hours=config.ENRICH_CACHE_TTL_HOURS)).isoformat()
+        cur = conn.execute(
+            "DELETE FROM enrichment_cache WHERE fetched_at < ?", (cache_cutoff,))
+        resumen["enrichment_cache_borrados"] = cur.rowcount
+
+        cur = conn.execute(
+            "DELETE FROM correlations WHERE created_at < ?", (corr_cutoff,))
+        resumen["correlations_borradas"] = cur.rowcount
+
+        borrados_hist = 0
+        alert_ids = [r["alert_id"] for r in conn.execute(
+            "SELECT DISTINCT alert_id FROM result_history").fetchall()]
+        for aid in alert_ids:
+            cur = conn.execute(
+                "DELETE FROM result_history WHERE alert_id=? AND id NOT IN "
+                "(SELECT id FROM result_history WHERE alert_id=? "
+                " ORDER BY version DESC LIMIT ?)",
+                (aid, aid, retain_history_versions),
+            )
+            borrados_hist += cur.rowcount
+        resumen["result_history_podados"] = borrados_hist
+
+        conn.commit()
+
+    try:
+        with _lock:
+            conn.execute("VACUUM")
+        resumen["vacuum"] = "ok"
+    except sqlite3.Error as exc:
+        resumen["vacuum"] = f"error: {exc}"
+
+    return resumen

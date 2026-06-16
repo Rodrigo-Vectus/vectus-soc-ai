@@ -75,3 +75,14 @@ COLDSTART_MIN_BASELINE = _int("COLDSTART_MIN_BASELINE", 50)
 # --- Anti-ruido (Fase 3) -----------------------------------------------------
 NOISE_THRESHOLD = _int("NOISE_THRESHOLD", 100)
 NOISE_WINDOW_DAYS = _int("NOISE_WINDOW_DAYS", 7)
+
+# --- Retencion / limpieza automatica (Fase 4) -------------------------------
+# El motor corre una limpieza periodica en background para no crecer sin limite.
+# Todos los plazos son configurables por entorno; los defaults son los acordados.
+CLEANUP_ENABLED = os.getenv("CLEANUP_ENABLED", "true").lower() == "true"
+CLEANUP_INTERVAL_HOURS = _int("CLEANUP_INTERVAL_HOURS", 24)
+RETAIN_RAW_DAYS = _int("RETAIN_RAW_DAYS", 30)
+RETAIN_SIGNATURE_EVENTS_DAYS = _int("RETAIN_SIGNATURE_EVENTS_DAYS", 7)
+RETAIN_CORRELATIONS_DAYS = _int("RETAIN_CORRELATIONS_DAYS", 90)
+RETAIN_RESULT_HISTORY_VERSIONS = _int("RETAIN_RESULT_HISTORY_VERSIONS", 3)
+RETAIN_VECTORS_DAYS = _int("RETAIN_VECTORS_DAYS", 90)

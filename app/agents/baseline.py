@@ -224,3 +224,30 @@ def _flush(col, ids: list[str], docs: list[str], metas: list[dict]) -> int:
     vecs = embed(docs)
     col.upsert(ids=ids, embeddings=vecs, documents=docs, metadatas=metas)
     return len(ids)
+
+
+
+def prune_old_vectors(retain_days: int) -> dict:
+    """
+    Elimina de la linea base (ChromaDB) los vectores mas viejos que
+    retain_days. Mantiene el baseline fresco.
+    """
+    if not is_configured():
+        return {"status": "not_configured"}
+    try:
+        from datetime import datetime, timezone, timedelta
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=retain_days)).isoformat()
+        col = _get_collection()
+        data = col.get(include=["metadatas"])
+        ids = data.get("ids", [])
+        metas = data.get("metadatas", []) or []
+        viejos = [
+            ids[i] for i, m in enumerate(metas)
+            if (m or {}).get("timestamp", "") and m["timestamp"] < cutoff
+        ]
+        if viejos:
+            col.delete(ids=viejos)
+        return {"deleted": len(viejos), "total_antes": len(ids)}
+    except Exception as exc:                                  # noqa: BLE001
+        logger.warning("prune de vectores fallo: %s", exc)
+        return {"status": f"error: {exc}"}
