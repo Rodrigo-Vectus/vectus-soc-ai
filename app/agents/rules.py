@@ -133,6 +133,56 @@ def r_win_critical_events(n: dict) -> Decision | None:
                  "T1098", "se intento restablecer la contrasena de una cuenta"),
     }
     if eid not in criticos:
+        # Segundo criterio: aunque el event_id no este en el catalogo, los GRUPOS
+        # de la regla Wazuh pueden indicar tactica ofensiva consumada. Wazuh ya
+        # clasifica el evento; aprovechamos esa taxonomia en vez de listar mil ids.
+        grupos = set(g.lower() for g in n.get("rule", {}).get("groups", []))
+        nivel = n.get("rule", {}).get("level", 0) or 0
+
+        grupos_ofensivos = {
+            "malware": ("T1204", "ejecucion de malware"),
+            "persistence": ("T1053", "mecanismo de persistencia"),
+            "privilege_escalation": ("T1068", "escalada de privilegios"),
+            "defense_evasion": ("T1070", "evasion de defensas"),
+            "exploit": ("T1203", "explotacion"),
+            "exploitation": ("T1203", "explotacion"),
+            "command_and_control": ("T1071", "comando y control"),
+            "exfiltration": ("T1041", "exfiltracion de datos"),
+            "lateral_movement": ("T1021", "movimiento lateral"),
+            "credential_access": ("T1003", "acceso a credenciales"),
+            "ransomware": ("T1486", "ransomware"),
+        }
+        match = grupos & set(grupos_ofensivos.keys())
+
+        if match and nivel >= 12:
+            grupo = sorted(match)[0]
+            tecnica, etiqueta = grupos_ofensivos[grupo]
+            host = w.get("computer") or n["asset"]
+            actor = w.get("subject_user") or n.get("action", {}).get("actor", "")
+            descripcion = n.get("rule", {}).get("description", "actividad sospechosa")
+            return Decision(
+                verdict="true_positive", confidence=80,
+                rule_id="R-WIN-TACTIC",
+                rule_name=f"Windows: {etiqueta}",
+                rationale=(
+                    f"Evento de Windows en {host} clasificado como '{etiqueta}' "
+                    f"(grupo Wazuh '{grupo}', nivel {nivel}): {descripcion}. Es actividad "
+                    "de tactica ofensiva consumada que requiere investigacion inmediata, "
+                    "independientemente de indicadores externos."
+                ),
+                key_factors=[
+                    f"Tactica detectada: {etiqueta}",
+                    f"Regla Wazuh: {descripcion} (nivel {nivel})",
+                    f"Host: {host}" + (f" - Cuenta: {actor}" if actor else ""),
+                ],
+                next_steps=[
+                    f"Investigar el evento de '{etiqueta}' en {host}",
+                    "Aislar el host si se confirma actividad maliciosa",
+                    "Revisar procesos, persistencia y conexiones del activo",
+                ],
+                mitre=[tecnica],
+                final=True,
+            )
         return None
 
     nombre, tecnica, desc = criticos[eid]
