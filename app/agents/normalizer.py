@@ -186,30 +186,62 @@ def _norm_windows(src: dict, out: dict) -> None:
     if src_ip and src_ip not in ("-", "::1", "127.0.0.1"):
         out["observables"].append(_obs("ip", src_ip))
 
-    # Observables de alto valor de eventos Sysmon/Windows (vienen en `data`).
+    # Observables de alto valor de eventos Sysmon/Windows.
+    # Soporta formato plano (data.image) y EventChannel (data.win.eventdata.Image).
+    ev = {}
+    _win = data.get("win")
+    if isinstance(_win, dict):
+        ev = _win.get("eventdata", {}) or {}
+
+    def _campo(*nombres):
+        for n in nombres:
+            if data.get(n):
+                return data.get(n)
+            if ev.get(n):
+                return ev.get(n)
+        return ""
+
+    sha256 = ""
+    md5 = ""
     hashes = data.get("hashes", {}) or {}
-    sha256 = hashes.get("sha256", "") or data.get("sha256", "")
+    if isinstance(hashes, dict):
+        sha256 = hashes.get("sha256", "")
+        md5 = hashes.get("md5", "")
+    hashes_str = ev.get("Hashes", "") or data.get("Hashes", "")
+    if hashes_str and isinstance(hashes_str, str):
+        for parte in hashes_str.split(","):
+            if "=" in parte:
+                algo, val = parte.split("=", 1)
+                algo = algo.strip().upper()
+                if algo == "SHA256" and not sha256:
+                    sha256 = val.strip()
+                elif algo == "MD5" and not md5:
+                    md5 = val.strip()
     if sha256:
         out["observables"].append(_obs("hash_sha256", sha256, is_public=True))
-    md5 = hashes.get("md5", "") or data.get("md5", "")
     if md5:
         out["observables"].append(_obs("hash_md5", md5, is_public=True))
-    image = data.get("image", "")
+
+    image = _campo("image", "Image")
     if image:
         out["observables"].append(_obs("file", image))
         out["win_meta"]["image"] = image
-    parent_image = data.get("parent_image", "")
+    parent_image = _campo("parent_image", "ParentImage")
     if parent_image:
         out["observables"].append(_obs("file", parent_image))
-    cmdline = data.get("command_line", "")
+    cmdline = _campo("command_line", "CommandLine")
     if cmdline:
         out["observables"].append(_obs("process", cmdline))
         out["win_meta"]["command_line"] = cmdline
-    task_name = data.get("task_name", "")
+    sysmon_user = _campo("User")
+    if sysmon_user and not actor:
+        usr = sysmon_user.split("\\")[-1] if "\\" in sysmon_user else sysmon_user
+        out["observables"].append(_obs("user", usr))
+    task_name = _campo("task_name", "TaskName")
     if task_name:
         out["observables"].append(_obs("other", task_name))
         out["win_meta"]["task_name"] = task_name
-    task_action = data.get("task_action", "")
+    task_action = _campo("task_action")
     if task_action:
         out["observables"].append(_obs("process", task_action))
 
