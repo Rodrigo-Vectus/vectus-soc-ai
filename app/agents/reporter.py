@@ -173,9 +173,12 @@ def build_correlation_summary(correlation: dict) -> str:
     rc = correlation.get("related_count", len(related))
 
     if not rc:
-        return ("**Evento aislado:** no se encontraron alertas relacionadas con este "
-                "activo u observable en la ventana temporal analizada. No hay "
-                "indicios de un patrón previo.")
+        base = ("**Evento aislado:** no se encontraron alertas relacionadas con este "
+                "activo u observable en la ventana temporal reciente (24h).")
+        recurrencia = _build_recurrence_text(correlation)
+        if recurrencia:
+            return base + recurrencia
+        return base + " No hay indicios de un patrón previo."
 
     encabezado = (
         f"**⚠ PATRÓN RECURRENTE**: esta alerta NO es un evento aislado. "

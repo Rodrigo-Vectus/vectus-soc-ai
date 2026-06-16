@@ -670,3 +670,37 @@ def cleanup(retain_raw_days: int, retain_sig_events_days: int,
         resumen["vacuum"] = f"error: {exc}"
 
     return resumen
+
+
+
+def find_observable_history(observable_values: list, current_alert_id: str,
+                            limit: int = 20) -> list:
+    """
+    Historial COMPLETO (sin ventana) de los observables: detecta REINCIDENCIA,
+    un observable que ya aparecio antes aunque haya sido hace meses.
+    """
+    if not observable_values:
+        return []
+    conn = get_conn()
+    out = []
+    with _lock:
+        for val in observable_values:
+            rows = conn.execute(
+                """SELECT o.verdict, o.created_at, a.alert_id
+                   FROM observables o JOIN alerts a ON a.alert_id = o.alert_id
+                   WHERE o.value = ? AND a.alert_id != ? AND a.status='done'
+                   ORDER BY o.created_at ASC""",
+                (val, current_alert_id),
+            ).fetchall()
+            if not rows:
+                continue
+            veredictos = [r["verdict"] for r in rows]
+            out.append({
+                "value": val,
+                "total": len(rows),
+                "first_seen": rows[0]["created_at"],
+                "last_seen": rows[-1]["created_at"],
+                "malicious_count": veredictos.count("malicious"),
+                "verdicts": list(set(veredictos)),
+            })
+    return out

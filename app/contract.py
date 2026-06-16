@@ -49,6 +49,7 @@ class Correlation(BaseModel):
     related_count: int = 0
     related: list[dict] = Field(default_factory=list)
     chain: list[dict] = Field(default_factory=list)
+    recurrence: list[dict] = Field(default_factory=list)
 
 
 class AlertResult(BaseModel):

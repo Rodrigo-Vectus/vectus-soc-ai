@@ -43,13 +43,19 @@ def correlate(normalized: dict) -> dict:
                 "verdict": None, "at": ""}],
             key=lambda x: x["at"],
         )
+        recurrence = db.find_observable_history(
+            observable_values=observable_values,
+            current_alert_id=normalized["alert_id"],
+        )
         return {
             "status": "done",
             "related_count": len(related),
             "related": related,
             "chain": chain if related else [],
+            "recurrence": recurrence,
         }
     except Exception as exc:                                  # noqa: BLE001
         logger.warning("correlación falló para %s: %s",
                        normalized["alert_id"], exc)
-        return {"status": "error", "related_count": 0, "related": [], "chain": []}
+        return {"status": "error", "related_count": 0, "related": [],
+                "chain": [], "recurrence": []}
