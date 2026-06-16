@@ -70,6 +70,7 @@ class AlertResult(BaseModel):
     key_factors: list[str] = Field(default_factory=list)
     next_steps: list[str] = Field(default_factory=list)
     mitre: list[str] = Field(default_factory=list)
+    tags: list[str] = Field(default_factory=list)
     is_informational: bool = True
     # --- detalle anidado ----------------------------------------------------
     observables: list[Observable] = Field(default_factory=list)

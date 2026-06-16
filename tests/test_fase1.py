@@ -33,7 +33,7 @@ DATA_FILE = os.path.join(os.path.dirname(__file__), "data", "alertas-wazuh.txt")
 CONTRACT_KEYS = {
     "alert_id", "status", "create_case", "verdict", "confidence", "severity",
     "alert_class", "asset", "title", "case_description", "key_observable",
-    "key_factors", "next_steps", "mitre", "is_informational", "observables",
+    "key_factors", "next_steps", "mitre", "tags", "is_informational", "observables",
     "enrichment", "internal_analysis", "correlation", "engine_version",
     "processed_at",
 }

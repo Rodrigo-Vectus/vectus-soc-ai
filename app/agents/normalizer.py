@@ -186,6 +186,33 @@ def _norm_windows(src: dict, out: dict) -> None:
     if src_ip and src_ip not in ("-", "::1", "127.0.0.1"):
         out["observables"].append(_obs("ip", src_ip))
 
+    # Observables de alto valor de eventos Sysmon/Windows (vienen en `data`).
+    hashes = data.get("hashes", {}) or {}
+    sha256 = hashes.get("sha256", "") or data.get("sha256", "")
+    if sha256:
+        out["observables"].append(_obs("hash_sha256", sha256, is_public=True))
+    md5 = hashes.get("md5", "") or data.get("md5", "")
+    if md5:
+        out["observables"].append(_obs("hash_md5", md5, is_public=True))
+    image = data.get("image", "")
+    if image:
+        out["observables"].append(_obs("file", image))
+        out["win_meta"]["image"] = image
+    parent_image = data.get("parent_image", "")
+    if parent_image:
+        out["observables"].append(_obs("file", parent_image))
+    cmdline = data.get("command_line", "")
+    if cmdline:
+        out["observables"].append(_obs("process", cmdline))
+        out["win_meta"]["command_line"] = cmdline
+    task_name = data.get("task_name", "")
+    if task_name:
+        out["observables"].append(_obs("other", task_name))
+        out["win_meta"]["task_name"] = task_name
+    task_action = data.get("task_action", "")
+    if task_action:
+        out["observables"].append(_obs("process", task_action))
+
 
 def _norm_fim(src: dict, out: dict) -> None:
     sc = src.get("syscheck", {}) or {}

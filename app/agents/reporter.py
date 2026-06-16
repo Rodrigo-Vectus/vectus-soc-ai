@@ -45,6 +45,26 @@ _SOURCE_LABEL = {
 }
 
 
+def _build_tags(normalized: dict, verdict: str, mitre: list) -> list:
+    """Tags para TheHive: MITRE + tacticas + clase + veredicto (contexto, no IOCs)."""
+    tags = []
+    for t in mitre:
+        tags.append(f"mitre:{t}")
+    tacticas_conocidas = {
+        "persistence", "privilege_escalation", "defense_evasion", "execution",
+        "credential_access", "lateral_movement", "exfiltration", "command_and_control",
+        "malware", "ransomware", "exploit", "exploitation", "discovery",
+        "collection", "impact", "initial_access", "reconnaissance",
+    }
+    grupos = [g.lower() for g in normalized.get("rule", {}).get("groups", [])]
+    for g in grupos:
+        if g in tacticas_conocidas:
+            tags.append(f"tactic:{g}")
+    tags.append(f"class:{normalized.get('family', 'generic')}")
+    tags.append(verdict)
+    return list(dict.fromkeys(tags))
+
+
 def _short_title(normalized: dict, decision: Decision) -> str:
     family = normalized["family"]
     asset = normalized["asset"]
@@ -313,6 +333,7 @@ def build_result(alert_id: str, normalized: dict, decision: Decision,
         key_factors=key_factors,
         next_steps=next_steps,
         mitre=mitre,
+        tags=_build_tags(normalized, verdict, mitre),
         is_informational=(verdict == "informational"),
         observables=[Observable(**o) for o in normalized["observables"]],
         enrichment=Enrichment(**enrichment_block),
