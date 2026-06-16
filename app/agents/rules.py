@@ -101,6 +101,88 @@ def r_win_machine_logoff(n: dict) -> Decision | None:
     return None
 
 
+def r_win_critical_events(n: dict) -> Decision | None:
+    """
+    Eventos de Windows criticos POR SU NATURALEZA, sin necesidad de un IOC
+    externo. Acciones de alto impacto (escalada de privilegios, borrado de
+    logs, creacion de cuentas) que ameritan un caso para investigacion
+    inmediata. 'Alguien borro el log de seguridad' no necesita que un humano
+    confirme si es sospechoso: lo es por definicion.
+    """
+    if n["family"] != "windows_event":
+        return None
+    w = n.get("win_meta", {})
+    eid = w.get("event_id", "")
+
+    criticos = {
+        "4732": ("Cuenta agregada a grupo de seguridad con privilegios",
+                 "T1098", "se agrego una cuenta a un grupo privilegiado (p. ej. Administrators)"),
+        "4728": ("Cuenta agregada a grupo global con privilegios",
+                 "T1098", "se agrego una cuenta a un grupo global de seguridad"),
+        "4756": ("Cuenta agregada a grupo universal con privilegios",
+                 "T1098", "se agrego una cuenta a un grupo universal de seguridad"),
+        "1102": ("Registro de auditoria de seguridad borrado",
+                 "T1070.001", "se borro el log de seguridad de Windows (evasion de defensas)"),
+        "4720": ("Cuenta de usuario creada",
+                 "T1136.001", "se creo una nueva cuenta de usuario"),
+        "4625": ("Multiples fallos de autenticacion",
+                 "T1110", "fallo de autenticacion (posible fuerza bruta si es recurrente)"),
+        "4672": ("Asignacion de privilegios especiales a nuevo logon",
+                 "T1078", "se asignaron privilegios especiales en un inicio de sesion"),
+        "4724": ("Intento de restablecer contrasena de cuenta",
+                 "T1098", "se intento restablecer la contrasena de una cuenta"),
+    }
+    if eid not in criticos:
+        return None
+
+    nombre, tecnica, desc = criticos[eid]
+    actor = w.get("target_user") or w.get("subject_user") or n.get("action", {}).get("actor", "")
+    host = w.get("computer") or n["asset"]
+
+    if eid in ("4625", "4672"):
+        return Decision(
+            verdict="needs_review", confidence=60,
+            rule_id="R-WIN-CRIT-REVIEW",
+            rule_name=f"Windows {eid}: {nombre}",
+            rationale=(
+                f"Evento {eid} en {host}: {desc}. Por si solo no confirma un incidente, "
+                "pero amerita revision humana para descartar actividad maliciosa "
+                "(especialmente si se repite o se combina con otros eventos)."
+            ),
+            key_factors=[f"Evento Windows {eid}: {nombre}",
+                         f"Cuenta involucrada: {actor or 'n/d'}",
+                         f"Host: {host}"],
+            next_steps=[f"Revisar el contexto del evento {eid} en {host}",
+                        "Correlacionar con otros eventos de la misma cuenta/host"],
+            mitre=[tecnica],
+            final=False,
+        )
+
+    return Decision(
+        verdict="true_positive", confidence=85,
+        rule_id="R-WIN-CRIT",
+        rule_name=f"Windows {eid}: {nombre}",
+        rationale=(
+            f"Evento {eid} detectado en {host}: {desc}. Es una accion de alto impacto "
+            "en la seguridad del entorno que, por su naturaleza, requiere investigacion "
+            "inmediata independientemente de la reputacion de indicadores externos. "
+            f"Cuenta involucrada: {actor or 'no identificada'}."
+        ),
+        key_factors=[
+            f"Accion critica: {nombre}",
+            f"Evento Windows {eid} ({tecnica})",
+            f"Cuenta: {actor or 'n/d'} - Host: {host}",
+        ],
+        next_steps=[
+            f"Verificar si la accion ({desc}) fue autorizada y por quien",
+            f"Revisar la actividad de la cuenta '{actor or 'involucrada'}' en {host}",
+            "Si no fue autorizada: contener la cuenta y aislar el host",
+        ],
+        mitre=[tecnica],
+        final=True,
+    )
+
+
 def r_agent_disconnected(n: dict) -> Decision | None:
     """Agente Wazuh desconectado: pérdida de visibilidad, no caso (acordado)."""
     if n["rule"]["id"] != "504":
@@ -409,6 +491,7 @@ def r_default(n: dict) -> Decision:
 
 # Orden de evaluación: específico → genérico dentro de cada familia.
 RULES = [
+    r_win_critical_events,
     r_win_service_logon,
     r_win_machine_logoff,
     r_agent_disconnected,

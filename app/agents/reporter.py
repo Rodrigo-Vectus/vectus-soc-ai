@@ -188,7 +188,8 @@ def build_correlation_summary(correlation: dict) -> str:
         fecha = _fmt_fecha(r.get("created_at", ""))
         veredicto = r.get("verdict", "sin veredicto")
         motivo = r.get("reason", "")
-        items.append(f"- `{fecha}` — **{veredicto}** ({motivo})")
+        aid = r.get("alert_id", "—")
+        items.append(f"- `{fecha}` — **{veredicto}** — `{aid}` ({motivo})")
     if len(eventos) > 5:
         items.append(f"- … y {len(eventos) - 5} más.")
     lista = "\n".join(items)
