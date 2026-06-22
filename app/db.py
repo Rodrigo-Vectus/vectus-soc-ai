@@ -307,11 +307,14 @@ def find_related_alerts(alert_id: str, asset: str, observable_values: list[str],
       b) que compartan algún observable NO genérico (IPs, hashes, cuentas
          nombradas, archivos) — que dos alertas mencionen 'root' no las
          relaciona; los genéricos ya vienen filtrados por el llamador.
+    Si una alerta coincide por AMBOS motivos, el `reason` los combina, con
+    el observable compartido primero (señal más fuerte que el solo host).
     Devuelve [{alert_id, verdict, alert_class, title, reason, created_at}].
     """
     conn = get_conn()
     since = (datetime.now(timezone.utc) - timedelta(hours=window_hours)).isoformat()
-    related: dict[str, dict] = {}
+    motivos: dict[str, list[str]] = {}   # alert_id -> motivos acumulados
+    rowcache: dict[str, sqlite3.Row] = {}  # alert_id -> fila para construir el dict
     with _lock:
         # a) mismo host
         rows = conn.execute(
@@ -324,7 +327,8 @@ def find_related_alerts(alert_id: str, asset: str, observable_values: list[str],
             (alert_id, since, asset, limit),
         ).fetchall()
         for r in rows:
-            related[r["alert_id"]] = _related_row(r, f"mismo host ({asset})")
+            motivos.setdefault(r["alert_id"], []).append(f"mismo host ({asset})")
+            rowcache[r["alert_id"]] = r
         # b) observables compartidos
         if observable_values:
             placeholders = ",".join("?" for _ in observable_values)
@@ -338,9 +342,14 @@ def find_related_alerts(alert_id: str, asset: str, observable_values: list[str],
                 (alert_id, since, *observable_values, limit),
             ).fetchall()
             for r in rows:
-                if r["alert_id"] not in related:
-                    related[r["alert_id"]] = _related_row(
-                        r, f"observable compartido: {r['shared']}")
+                # el observable es señal más fuerte: va primero en el reason
+                motivos.setdefault(r["alert_id"], []).insert(
+                    0, f"observable compartido: {r['shared']}")
+                rowcache.setdefault(r["alert_id"], r)
+    related = {
+        aid: _related_row(rowcache[aid], " + ".join(ms))
+        for aid, ms in motivos.items()
+    }
     out = sorted(related.values(), key=lambda x: x["created_at"], reverse=True)
     return out[:limit]
 
