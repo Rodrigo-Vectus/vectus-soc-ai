@@ -30,6 +30,7 @@ class Enrichment(BaseModel):
     abuseipdb: dict = Field(default_factory=lambda: {"status": "not_configured"})
     otx: dict = Field(default_factory=lambda: {"status": "not_configured"})
     shodan: dict = Field(default_factory=lambda: {"status": "not_configured"})  # nunca se usa
+    misp: dict = Field(default_factory=lambda: {"status": "not_configured"})
 
 
 class InternalAnalysis(BaseModel):

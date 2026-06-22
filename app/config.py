@@ -86,3 +86,13 @@ RETAIN_SIGNATURE_EVENTS_DAYS = _int("RETAIN_SIGNATURE_EVENTS_DAYS", 7)
 RETAIN_CORRELATIONS_DAYS = _int("RETAIN_CORRELATIONS_DAYS", 90)
 RETAIN_RESULT_HISTORY_VERSIONS = _int("RETAIN_RESULT_HISTORY_VERSIONS", 3)
 RETAIN_VECTORS_DAYS = _int("RETAIN_VECTORS_DAYS", 90)
+
+# --- MISP (inteligencia propia del SOC) -------------------------------------
+MISP_URL = os.getenv("https://192.168.11.125/", "")
+MISP_API_KEY = os.getenv("bTthdSWAJF2QMiN7kNP2fr5IMOp08kQp6Riw1cGx", "")
+MISP_VERIFY_SSL = os.getenv("MISP_VERIFY_SSL", "false").lower() == "true"
+
+# --- MISP (inteligencia propia del SOC) -------------------------------------
+MISP_URL = os.getenv("MISP_URL", "")
+MISP_API_KEY = os.getenv("MISP_API_KEY", "")
+MISP_VERIFY_SSL = os.getenv("MISP_VERIFY_SSL", "false").lower() == "true"

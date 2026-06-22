@@ -1,9 +1,14 @@
 """
 Agente 3 — Enricher de reputación externa (Fase 2, brief §5).
 
-Consulta VirusTotal, AbuseIPDB y OTX para los observables PÚBLICOS
+Consulta VirusTotal, AbuseIPDB, OTX y MISP para los observables PÚBLICOS
 (IPs globales, hashes, dominios) que el Router marcó como enriquecibles.
 Shodan queda declarado pero nunca se usa (tier free sin créditos API).
+
+MISP es distinto a las otras fuentes: no es reputación de terceros sino
+la inteligencia PROPIA del SOC (eventos curados + feeds confiables). Un
+hit con to_ids=true es señal fuerte; aporta además contexto rico (evento,
+threat level, tags, galaxies) para el dossier del analista.
 
 Principios:
 - CACHÉ primero (SQLite, TTL configurable, default 24 h): la misma IP
@@ -40,6 +45,10 @@ ABUSE_MALICIOUS_MIN = 80    # abuseConfidenceScore → malicious
 ABUSE_SUSPICIOUS_MIN = 25   # → suspicious
 OTX_PULSES_SUSPICIOUS = 3   # presencia en pulsos de la comunidad → suspicious
 
+# MISP: mapa de threat_level_id a etiqueta legible, y tope de matches.
+_MISP_THREAT_LEVEL = {"1": "High", "2": "Medium", "3": "Low", "4": "Undefined"}
+_MISP_MAX_MATCHES = 5
+
 
 def _vt_wait_slot() -> None:
     """Respeta el intervalo mínimo entre llamadas reales a VT (tier free)."""
@@ -66,6 +75,30 @@ def _http_get(url: str, headers: dict, params: dict | None = None) -> dict:
     for attempt in range(1 + config.ENRICH_RETRIES):
         try:
             resp = httpx.get(url, headers=headers, params=params, timeout=_TIMEOUT)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code < 500:
+                raise                       # 4xx: definitivo, no reintentar
+            last_exc = exc
+        except httpx.HTTPError as exc:      # timeouts, transporte
+            last_exc = exc
+        if attempt < config.ENRICH_RETRIES:
+            time.sleep(_RETRY_BACKOFFS[min(attempt, len(_RETRY_BACKOFFS) - 1)])
+    raise last_exc
+
+
+def _http_post(url: str, headers: dict, json_body: dict, verify: bool = True) -> dict:
+    """
+    POST con reintentos/backoff, misma semántica que _http_get. MISP usa POST
+    en /attributes/restSearch. `verify` permite desactivar la validación TLS
+    para el certificado self-signed de MISP en red interna.
+    """
+    last_exc: Exception = RuntimeError("sin intentos")
+    for attempt in range(1 + config.ENRICH_RETRIES):
+        try:
+            resp = httpx.post(url, headers=headers, json=json_body,
+                              timeout=_TIMEOUT, verify=verify)
             resp.raise_for_status()
             return resp.json()
         except httpx.HTTPStatusError as exc:
@@ -199,11 +232,103 @@ def query_otx(obs_type: str, value: str) -> dict:
     return result
 
 
+def query_misp(obs_type: str, value: str) -> dict:
+    """
+    Inteligencia PROPIA en MISP (/attributes/restSearch). A diferencia de
+    VT/Abuse/OTX (reputación de terceros), MISP es inteligencia curada del
+    SOC: un hit con to_ids=true es señal fuerte. Devuelve contexto rico
+    (evento, threat level, tags, galaxies) hasta _MISP_MAX_MATCHES matches.
+    Cachea como las demás fuentes. Self-signed cert → verify configurable.
+    """
+    if not config.MISP_URL or not config.MISP_API_KEY:
+        return {"status": "not_configured"}
+    if obs_type not in ("ip", "domain", "url", "hash_sha256", "hash_md5", "file"):
+        return {"status": "not_applicable"}
+
+    cache_key = f"misp:{obs_type}:{value}"
+    cached = db.cache_get(cache_key, config.ENRICH_CACHE_TTL_HOURS)
+    if cached is not None:
+        return {**cached, "from_cache": True}
+
+    headers = {
+        "Authorization": config.MISP_API_KEY,
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+    }
+    body = {
+        "returnFormat": "json",
+        "value": value,
+        "limit": _MISP_MAX_MATCHES * 4,   # traemos algo más y recortamos tras parsear
+        "includeEventTags": True,
+        "includeContext": True,
+        "enforceWarninglist": False,
+    }
+    try:
+        data = _http_post(f"{config.MISP_URL}/attributes/restSearch",
+                          headers=headers, json_body=body,
+                          verify=config.MISP_VERIFY_SSL)
+    except httpx.HTTPError as exc:
+        logger.warning("MISP inaccesible para %s: %s", value, exc)
+        return {"status": "error", "detail": str(exc)}
+
+    attrs = (data.get("response", {}) or {}).get("Attribute", []) or []
+    if not attrs:
+        result = {"status": "done", "found": False}
+        db.cache_set(cache_key, result)
+        return result
+
+    matches = []
+    any_to_ids = False
+    for a in attrs[:_MISP_MAX_MATCHES]:
+        ev = a.get("Event", {}) or {}
+        to_ids = bool(a.get("to_ids", False))
+        any_to_ids = any_to_ids or to_ids
+        tags = []
+        for src in ((a.get("Tag", []) or []), (ev.get("Tag", []) or [])):
+            for t in src:
+                name = t.get("name", "")
+                if name and name not in tags:
+                    tags.append(name)
+        galaxies = []
+        for g in (a.get("Galaxy", []) or []) + (ev.get("Galaxy", []) or []):
+            gname = g.get("name", "")
+            for cl in (g.get("GalaxyCluster", []) or []):
+                gval = cl.get("value", "")
+                if gval:
+                    galaxies.append(f"{gname}: {gval}" if gname else gval)
+        matches.append({
+            "attribute_type": a.get("type", ""),
+            "category": a.get("category", ""),
+            "to_ids": to_ids,
+            "comment": a.get("comment", ""),
+            "event_id": ev.get("id", ""),
+            "event_info": ev.get("info", ""),
+            "event_uuid": ev.get("uuid", ""),
+            "threat_level": _MISP_THREAT_LEVEL.get(
+                str(ev.get("threat_level_id", "")), "Undefined"),
+            "org": (ev.get("Orgc", {}) or {}).get("name", "")
+                   or (ev.get("Org", {}) or {}).get("name", ""),
+            "date": ev.get("date", ""),
+            "tags": tags,
+            "galaxies": galaxies,
+        })
+
+    result = {
+        "status": "done",
+        "found": True,
+        "to_ids": any_to_ids,
+        "match_count": len(attrs),
+        "matches": matches,
+    }
+    db.cache_set(cache_key, result)
+    return result
+
+
 # --------------------------------------------------------------------------
 # Agregación
 # --------------------------------------------------------------------------
 
-def _aggregate_verdict(vt: dict, abuse: dict, otx: dict) -> tuple[str, list[str]]:
+def _aggregate_verdict(vt: dict, abuse: dict, otx: dict, misp: dict) -> tuple[str, list[str]]:
     """Veredicto del observable + razones, SOLO sobre datos verificados."""
     reasons: list[str] = []
     level = 0   # 0 unknown/clean, 1 suspicious, 2 malicious
@@ -237,6 +362,24 @@ def _aggregate_verdict(vt: dict, abuse: dict, otx: dict) -> tuple[str, list[str]
         if pc >= OTX_PULSES_SUSPICIOUS:
             level = max(level, 1)
             reasons.append(f"OTX: presente en {pc} pulsos de la comunidad")
+    # MISP: inteligencia propia curada. Pesa fuerte cuando hay hit.
+    if misp.get("status") == "done" and misp.get("found"):
+        has_data = True
+        m0 = misp["matches"][0] if misp.get("matches") else {}
+        ev_info = m0.get("event_info", "?")
+        tl = m0.get("threat_level", "?")
+        mtags = m0.get("tags", []) or []
+        tagstr = f", tags: {', '.join(mtags[:4])}" if mtags else ""
+        extra = (f" (+{misp['match_count'] - 1} match(es) más)"
+                 if misp.get("match_count", 0) > 1 else "")
+        if misp.get("to_ids"):
+            level = max(level, 2)
+            reasons.append(f"MISP: IOC conocido en '{ev_info}' "
+                           f"(threat level {tl}{tagstr}){extra}")
+        else:
+            level = max(level, 1)
+            reasons.append(f"MISP: presente en '{ev_info}' pero no marcado "
+                           f"para detección (threat level {tl}{tagstr}){extra}")
 
     if not has_data:
         return "unknown", ["sin datos verificados de ninguna fuente"]
@@ -257,37 +400,41 @@ def enrich(normalized: dict, routing: dict) -> dict:
             "virustotal": {"status": "not_applicable"},
             "abuseipdb": {"status": "not_applicable"},
             "otx": {"status": "not_applicable"},
+            "misp": {"status": "not_applicable"},
             "shodan": {"status": "not_configured"},
         }
 
     any_configured = any([config.VIRUSTOTAL_API_KEY, config.ABUSEIPDB_API_KEY,
-                          config.OTX_API_KEY])
+                          config.OTX_API_KEY,
+                          (config.MISP_URL and config.MISP_API_KEY)])
     if not any_configured:
         return {
             "status": "not_configured",
             "virustotal": {"status": "not_configured"},
             "abuseipdb": {"status": "not_configured"},
             "otx": {"status": "not_configured"},
+            "misp": {"status": "not_configured"},
             "shodan": {"status": "not_configured"},
         }
 
-    vt_all, abuse_all, otx_all = {}, {}, {}
+    vt_all, abuse_all, otx_all, misp_all = {}, {}, {}, {}
     errors = 0
     for obs in externals:
         t, v = obs["type"], obs["value"]
         vt = query_virustotal(t, v)
         abuse = query_abuseipdb(t, v)
         otx = query_otx(t, v)
-        vt_all[v], abuse_all[v], otx_all[v] = vt, abuse, otx
-        errors += sum(1 for r in (vt, abuse, otx) if r.get("status") == "error")
+        misp = query_misp(t, v)
+        vt_all[v], abuse_all[v], otx_all[v], misp_all[v] = vt, abuse, otx, misp
+        errors += sum(1 for r in (vt, abuse, otx, misp) if r.get("status") == "error")
 
-        verdict, reasons = _aggregate_verdict(vt, abuse, otx)
+        verdict, reasons = _aggregate_verdict(vt, abuse, otx, misp)
         # Actualizar el observable en la estructura normalizada (por referencia)
         for o in normalized["observables"]:
             if o["type"] == t and o["value"] == v:
                 o["verdict"] = verdict
                 o["sources"] = {"virustotal": vt, "abuseipdb": abuse, "otx": otx,
-                                "reasons": reasons}
+                                "misp": misp, "reasons": reasons}
 
     if errors and config.ENRICH_FAIL_HARD:
         raise RuntimeError(f"enriquecimiento con {errors} errores y ENRICH_FAIL_HARD=true")
@@ -297,5 +444,6 @@ def enrich(normalized: dict, routing: dict) -> dict:
         "virustotal": vt_all,
         "abuseipdb": abuse_all,
         "otx": otx_all,
+        "misp": misp_all,
         "shodan": {"status": "not_configured"},
     }
