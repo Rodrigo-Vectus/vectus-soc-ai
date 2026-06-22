@@ -176,6 +176,41 @@ def _fmt_fecha(iso: str) -> str:
         return iso
 
 
+def _build_recurrence_text(correlation: dict) -> str:
+    """
+    Relato de REINCIDENCIA histórica (sin ventana temporal): observables que
+    ya aparecieron antes, aunque haya sido hace meses. Complementa la
+    correlación de 24h. Devuelve cadena vacía si no hay reincidencia.
+    Cada item de recurrence trae: value, total, first_seen, last_seen,
+    malicious_count, verdicts.
+    """
+    rec = correlation.get("recurrence", []) or []
+    if not rec:
+        return ""
+
+    lineas = []
+    for r in rec:
+        valor = r.get("value", "—")
+        total = r.get("total", 0)
+        first_seen = _fmt_fecha(r.get("first_seen", ""))
+        last_seen = _fmt_fecha(r.get("last_seen", ""))
+        mal = r.get("malicious_count", 0)
+        marca = " — ⚠ con antecedentes maliciosos" if mal else ""
+        lineas.append(
+            f"- `{valor}` — visto **{total} vez(ces)** "
+            f"(primera: {first_seen}, última: {last_seen}){marca}"
+        )
+
+    cuerpo = "\n".join(lineas)
+    return (
+        "\n\n──────── 🔁 REINCIDENCIA (historial completo) ────────\n\n"
+        "**Este observable NO es nuevo:** ya fue visto en alertas previas "
+        "fuera de la ventana de 24h. Aunque hoy parezca un evento aislado, "
+        "tiene historia en el entorno:\n\n"
+        + cuerpo
+    )
+
+
 def build_correlation_summary(correlation: dict) -> str:
     """
     Genera un relato en lenguaje natural del patrón histórico, pensado
