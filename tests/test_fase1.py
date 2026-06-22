@@ -35,7 +35,7 @@ CONTRACT_KEYS = {
     "alert_class", "asset", "title", "case_description", "key_observable",
     "key_factors", "next_steps", "mitre", "tags", "is_informational", "observables",
     "enrichment", "internal_analysis", "correlation", "engine_version",
-    "processed_at",
+    "processed_at", "correlation_summary",
 }
 
 
