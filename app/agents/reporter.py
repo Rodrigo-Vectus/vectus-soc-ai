@@ -114,8 +114,9 @@ def _sources_paragraph(enrichment: dict, baseline_block: dict,
     parts: list[str] = []
     e_status = enrichment.get("status", "")
     e_map = {
-        "done": "Reputación externa (VT/AbuseIPDB/OTX): consultada sin errores.",
-        "partial": "Reputación externa: consultada con errores parciales en alguna fuente "
+        "done": "Reputación externa (VT/AbuseIPDB/OTX) e inteligencia propia (MISP): consultadas sin errores.",
+        "partial": "Reputación externa (VT/AbuseIPDB/OTX) e inteligencia propia (MISP): "
+                   "consultadas con errores parciales en alguna fuente "
                    "(detalle en el bloque enrichment); solo se usó lo verificado.",
         "no_external_observables": "Reputación externa: no aplica (la alerta no contiene "
                                    "observables públicos enriquecibles).",
@@ -209,6 +210,68 @@ def _build_recurrence_text(correlation: dict) -> str:
         "tiene historia en el entorno:\n\n"
         + cuerpo
     )
+
+
+def _build_misp_text(enrichment: dict) -> str:
+    """
+    Relato de INTELIGENCIA MISP: observables que matchearon contra la
+    inteligencia propia del SOC (eventos curados / feeds confiables).
+    A diferencia de la reputación de terceros, un hit en MISP con
+    to_ids=true es una identificación explícita como IOC. Devuelve cadena
+    vacía si ningún observable tuvo match (no se agrega sección vacía).
+    Formato Markdown para que TheHive lo renderice.
+    """
+    misp_block = enrichment.get("misp", {}) or {}
+    con_hit = []
+    for valor, data in misp_block.items():
+        if not isinstance(data, dict):
+            continue
+        if data.get("status") == "done" and data.get("found"):
+            con_hit.append((valor, data))
+
+    if not con_hit:
+        return ""
+
+    lineas = [
+        "\n\n──────── 🎯 INTELIGENCIA MISP (propia) ────────\n",
+        "Coincidencia(s) con la inteligencia curada del SOC "
+        "(eventos propios o feeds confiables):\n",
+    ]
+    for valor, data in con_hit:
+        matches = data.get("matches", []) or []
+        if not matches:
+            continue
+        m0 = matches[0]
+        marca = ("**IOC conocido** (marcado para detección)"
+                 if data.get("to_ids") else
+                 "presente (no marcado para detección)")
+        lineas.append(f"- `{valor}` — {marca}")
+        ev = m0.get("event_info", "")
+        if ev:
+            lineas.append(f"    - Evento: **{ev}**")
+        meta = []
+        if m0.get("threat_level"):
+            meta.append(f"threat level {m0['threat_level']}")
+        if m0.get("org"):
+            meta.append(f"reportado por {m0['org']}")
+        if m0.get("date"):
+            meta.append(f"fecha {m0['date']}")
+        if meta:
+            lineas.append(f"    - {' · '.join(meta)}")
+        tags = m0.get("tags", []) or []
+        if tags:
+            lineas.append(f"    - Tags: {', '.join(tags[:6])}")
+        galaxies = m0.get("galaxies", []) or []
+        if galaxies:
+            lineas.append(f"    - Galaxies: {', '.join(galaxies[:4])}")
+        comment = m0.get("comment", "")
+        if comment:
+            lineas.append(f"    - Nota: _{comment}_")
+        total = data.get("match_count", len(matches))
+        if total > 1:
+            lineas.append(f"    - (+{total - 1} coincidencia(s) más en MISP)")
+
+    return "\n".join(lineas)
 
 
 def build_correlation_summary(correlation: dict) -> str:
@@ -352,6 +415,12 @@ def build_result(alert_id: str, normalized: dict, decision: Decision,
         "confidence": decision.confidence,
     }]
 
+    # El correlation_summary es el bloque de inteligencia destacada que
+    # TheHive muestra aparte: correlación + reincidencia + MISP. Aparece
+    # siempre, en ambos caminos (analista o corto), de forma determinística.
+    correlation_summary = (build_correlation_summary(correlation_block)
+                           + _build_misp_text(enrichment_block))
+
     result = AlertResult(
         alert_id=alert_id,
         status="done",
@@ -363,7 +432,7 @@ def build_result(alert_id: str, normalized: dict, decision: Decision,
         asset=normalized["asset"],
         title=_short_title(normalized, decision),
         case_description=case_description,
-        correlation_summary=build_correlation_summary(correlation_block),
+        correlation_summary=correlation_summary,
         key_observable=_pick_key_observable(normalized),
         key_factors=key_factors,
         next_steps=next_steps,
