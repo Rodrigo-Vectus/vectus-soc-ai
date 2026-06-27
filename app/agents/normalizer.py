@@ -229,10 +229,37 @@ def _norm_windows(src: dict, out: dict) -> None:
     parent_image = _campo("parent_image", "ParentImage")
     if parent_image:
         out["observables"].append(_obs("file", parent_image))
+        out["win_meta"]["parent_image"] = parent_image
     cmdline = _campo("command_line", "CommandLine")
     if cmdline:
         out["observables"].append(_obs("process", cmdline))
         out["win_meta"]["command_line"] = cmdline
+    # --- Contexto de comportamiento de endpoint (Sysmon EventID 1 y afines) ---
+    # Estos campos son la EVIDENCIA DE COMPORTAMIENTO real: el árbol de proceso,
+    # el path de ejecución, el nivel de integridad. Antes se descartaban y el
+    # analista quedaba ciego (juzgaba por rule.level). Ahora viajan en win_meta
+    # y de ahí al dossier del analista (ver analyst._build_dossier).
+    parent_cmdline = _campo("parent_command_line", "ParentCommandLine")
+    if parent_cmdline:
+        out["win_meta"]["parent_command_line"] = parent_cmdline
+    integrity = _campo("integrity_level", "IntegrityLevel")
+    if integrity:
+        out["win_meta"]["integrity_level"] = integrity
+    current_dir = _campo("current_directory", "CurrentDirectory")
+    if current_dir:
+        out["win_meta"]["current_directory"] = current_dir
+    original_name = _campo("original_file_name", "OriginalFileName")
+    if original_name:
+        out["win_meta"]["original_file_name"] = original_name
+    description = _campo("description", "Description")
+    if description:
+        out["win_meta"]["description"] = description
+    company = _campo("company", "Company")
+    if company:
+        out["win_meta"]["company"] = company
+    sysmon_user_full = _campo("User")
+    if sysmon_user_full:
+        out["win_meta"]["user"] = sysmon_user_full
     sysmon_user = _campo("User")
     if sysmon_user and not actor:
         usr = sysmon_user.split("\\")[-1] if "\\" in sysmon_user else sysmon_user
