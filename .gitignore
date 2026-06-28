@@ -1,7 +1,26 @@
+# Secretos y entorno — NUNCA subir
+.env
+dashboard/.env
+*.env.local
+
+# Bases de datos (motor y dashboard)
+*.db
+*.db-wal
+*.db-shm
+dashboard/data/
+
+# Python
 __pycache__/
 *.pyc
-.env
 .pytest_cache/
-*.db
 .venv/
+venv/
+
+# Backups y temporales
 *.bak
+*.bak-original
+docker-compose.yml.bak*
+README.md.bak
+
+# Sistema
+.DS_Store

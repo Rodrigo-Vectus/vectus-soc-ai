@@ -1,0 +1,30 @@
+services:
+  dashboard:
+    build: .
+    container_name: vectus-soc-dashboard
+    restart: unless-stopped
+    ports:
+      - "8005:8005"
+    env_file:
+      - .env
+    volumes:
+      # Base PROPIA del dashboard (usuarios, OTP, auditoría, notas) — persistente
+      - ./data:/app/data
+      # static/ y api.py montados en vivo para iterar sin rebuild
+      - ./static:/app/static
+      - ./api.py:/app/api.py
+      # Volumen del MOTOR montado READ-ONLY (:ro). El dashboard solo lee la DB.
+      - engine-data:/engine-data:ro
+    networks:
+      - default          # red propia del dashboard
+      - engine-net       # red del motor, para llamar su API (reprocess)
+
+volumes:
+  engine-data:
+    external: true
+    name: vectus-soc_vectus-data
+
+networks:
+  engine-net:
+    external: true
+    name: vectus-soc_default

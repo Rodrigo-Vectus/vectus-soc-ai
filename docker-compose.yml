@@ -1,6 +1,11 @@
-# Vectus SOC Engine — despliegue con `docker compose up --build -d`
+# Vectus SOC — stack unificado: motor + dashboard en un solo compose.
+# Levantar todo:   docker compose up -d --build
+# El nombre de proyecto se mantiene 'vectus-soc' (ver .env: COMPOSE_PROJECT_NAME)
+# para reusar el volumen existente vectus-soc_vectus-data SIN perder datos.
+
 services:
-  vectus-engine:
+  # ----- MOTOR (igual que antes, no cambia su comportamiento) -----
+  engine:
     build: .
     container_name: vectus-soc-engine
     restart: unless-stopped
@@ -11,7 +16,7 @@ services:
     environment:
       - DATA_DIR=/data
     volumes:
-      - vectus-data:/data          # SQLite persistente (ChromaDB se suma en Fase 2)
+      - vectus-data:/data
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8003/health', timeout=3)"]
       interval: 30s
@@ -19,5 +24,28 @@ services:
       retries: 3
       start_period: 10s
 
+  # ----- DASHBOARD (lee la DB del motor read-only, llama su API) -----
+  dashboard:
+    build: ./dashboard
+    container_name: vectus-soc-dashboard
+    restart: unless-stopped
+    ports:
+      - "8005:8005"
+    env_file:
+      - ./dashboard/.env
+    depends_on:
+      - engine
+    volumes:
+      # Base propia del dashboard (usuarios, OTP, auditoría, notas)
+      - ./dashboard/data:/app/data
+      # static/ y api.py en vivo para iterar sin rebuild
+      - ./dashboard/static:/app/static
+      - ./dashboard/api.py:/app/api.py
+      # La DB del motor: el MISMO volumen, montado READ-ONLY
+      - vectus-data:/engine-data:ro
+
 volumes:
+  # Volumen EXISTENTE del motor — external para no recrearlo (cero pérdida).
   vectus-data:
+    external: true
+    name: vectus-soc_vectus-data

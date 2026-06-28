@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/static/logo_vectus.png">
+<title>Vectus SOC · Acceso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070B14; --surface:#0E1626; --surface-2:#141F33; --border:#1E2A3D;
+  --accent:#22D3EE; --accent-2:#2DD4BF; --accent-dim:#0E7490;
+  --text:#E6EDF5; --text-muted:#7E8DA0; --text-dim:#4A5970;
+  --ok:#22C55E; --warn:#F59E0B; --crit:#EF4444;
+  --font-ui:'Inter',system-ui,sans-serif; --font-mono:'JetBrains Mono',monospace;
+}
+/* ---------- Tema claro ---------- */
+body.light{
+  --bg:#F4F6FB; --surface:#FFFFFF; --surface-2:#EEF2F9; --border:#DBE2EE;
+  --accent:#0891B2; --accent-2:#0D9488; --accent-dim:#06B6D4;
+  --text:#0F1B2D; --text-muted:#5A6B82; --text-dim:#94A3B8;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:var(--font-ui);background:var(--bg);color:var(--text);
+  min-height:100vh;display:grid;place-items:center;padding:24px;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(34,211,238,.06), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(45,212,191,.05), transparent 40%);
+}
+.grid-bg{position:fixed;inset:0;z-index:0;opacity:.4;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(circle at 50% 50%, #000 0%, transparent 70%);
+}
+.card{
+  position:relative;z-index:1;width:100%;max-width:400px;
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:40px 36px;box-shadow:0 24px 64px rgba(0,0,0,.5);
+}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.brand img{width:38px;height:38px}
+.brand .logo-fallback{width:38px;height:38px;border-radius:9px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:grid;place-items:center;font-weight:700;color:#04141A;font-size:18px}
+.brand-text{font-weight:700;font-size:17px;letter-spacing:-.01em}
+.brand-text span{color:var(--accent)}
+.eyebrow{font-family:var(--font-mono);font-size:11px;color:var(--accent);
+  text-transform:uppercase;letter-spacing:.18em;margin:28px 0 6px}
+h1{font-size:22px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.sub{color:var(--text-muted);font-size:13.5px;line-height:1.5;margin-bottom:26px}
+label{display:block;font-size:12px;color:var(--text-muted);margin-bottom:7px;
+  font-weight:500}
+input{width:100%;background:var(--bg);border:1px solid var(--border);
+  border-radius:9px;padding:12px 14px;color:var(--text);font-size:14px;
+  font-family:var(--font-mono);transition:border-color .15s, box-shadow .15s}
+input:focus{outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(34,211,238,.12)}
+input::placeholder{color:var(--text-dim)}
+.code-input{letter-spacing:.4em;text-align:center;font-size:20px;font-weight:600}
+button{width:100%;margin-top:18px;padding:12px;border:none;border-radius:9px;
+  background:var(--accent);color:#04141A;font-weight:600;font-size:14px;
+  font-family:var(--font-ui);cursor:pointer;transition:background .15s, transform .1s}
+button:hover{background:#3DDDF0}
+button:active{transform:translateY(1px)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.msg{margin-top:16px;font-size:13px;padding:11px 13px;border-radius:8px;
+  display:none;font-family:var(--font-mono)}
+.msg.err{display:block;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);
+  color:#FCA5A5}
+.msg.ok{display:block;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);
+  color:#86EFAC}
+.back{background:none;color:var(--text-muted);margin-top:12px;font-size:12.5px;
+  padding:6px}
+.back:hover{background:none;color:var(--text)}
+.foot{position:fixed;bottom:20px;left:0;right:0;text-align:center;z-index:1;
+  font-family:var(--font-mono);font-size:11px;color:var(--text-dim);
+  letter-spacing:.05em}
+.step{display:none}.step.active{display:block}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="card">
+  <div class="brand">
+    <img src="/static/logo_vectus.png" alt="Vectus" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+    <div class="logo-fallback" style="display:none">V</div>
+    <div class="brand-text">Vectus <span>SOC</span></div>
+  </div>
+
+  <!-- Paso 1: email -->
+  <div class="step active" id="step-email">
+    <div class="eyebrow">Acceso al panel</div>
+    <h1>Iniciar sesión</h1>
+    <p class="sub">Ingresá tu email corporativo. Te enviamos un código de un solo uso para entrar.</p>
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="vos@vectus.la" autocomplete="email" autofocus>
+    <button id="btn-code">Enviar código</button>
+    <div class="msg" id="msg1"></div>
+  </div>
+
+  <!-- Paso 2: código -->
+  <div class="step" id="step-code">
+    <div class="eyebrow">Verificación</div>
+    <h1>Ingresá el código</h1>
+    <p class="sub">Revisá tu casilla. El código vence en 10 minutos.</p>
+    <label for="code">Código de 6 dígitos</label>
+    <input id="code" class="code-input" type="text" inputmode="numeric" maxlength="6" placeholder="000000">
+    <button id="btn-verify">Entrar</button>
+    <button class="back" id="btn-back">← Usar otro email</button>
+    <div class="msg" id="msg2"></div>
+  </div>
+</div>
+<div class="foot">VECTUS SOC ENGINE · PANEL DE OPERACIONES</div>
+
+<script>
+const $ = s => document.querySelector(s);
+let currentEmail = "";
+
+function showMsg(el, text, kind){ el.textContent = text; el.className = "msg " + kind; }
+
+$("#btn-code").addEventListener("click", async () => {
+  const email = $("#email").value.trim();
+  if(!email || !email.includes("@")){ showMsg($("#msg1"),"Ingresá un email válido.","err"); return; }
+  $("#btn-code").disabled = true;
+  try{
+    const r = await fetch("/auth/request-code",{method:"POST",
+      headers:{"Content-Type":"application/json"},body:JSON.stringify({email})});
+    const d = await r.json();
+    if(r.status===429){ showMsg($("#msg1"), d.error, "err"); $("#btn-code").disabled=false; return; }
+    currentEmail = email;
+    $("#step-email").classList.remove("active");
+    $("#step-code").classList.add("active");
+    $("#code").focus();
+  }catch(e){ showMsg($("#msg1"),"Error de conexión. Reintentá.","err"); }
+  $("#btn-code").disabled = false;
+});
+
+$("#btn-verify").addEventListener("click", async () => {
+  const code = $("#code").value.trim();
+  if(code.length!==6){ showMsg($("#msg2"),"El código tiene 6 dígitos.","err"); return; }
+  $("#btn-verify").disabled = true;
+  try{
+    const r = await fetch("/auth/verify",{method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({email:currentEmail,code})});
+    const d = await r.json();
+    if(r.ok && d.ok){ window.location.href = "/dashboard"; return; }
+    showMsg($("#msg2"), d.error || "Código inválido.", "err");
+  }catch(e){ showMsg($("#msg2"),"Error de conexión. Reintentá.","err"); }
+  $("#btn-verify").disabled = false;
+});
+
+$("#btn-back").addEventListener("click", () => {
+  $("#step-code").classList.remove("active");
+  $("#step-email").classList.add("active");
+  $("#msg2").className = "msg";
+});
+
+$("#email").addEventListener("keydown", e => { if(e.key==="Enter") $("#btn-code").click(); });
+$("#code").addEventListener("keydown", e => { if(e.key==="Enter") $("#btn-verify").click(); });
+$("#code").addEventListener("input", e => { e.target.value = e.target.value.replace(/\D/g,""); });
+</script>
+</body>
+</html>
