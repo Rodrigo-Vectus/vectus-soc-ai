@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="/static/logo_vectus.png">
-<title>Vectus SOC · Auditoría</title>
+<title>Vectus SOC · Audit Log</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -84,30 +84,30 @@ tr:last-child td{border-bottom:none}
     <div class="brand-text">Vectus <span>SOC</span></div>
   </div>
   <nav class="nav">
-    <div class="nav-label">Operación</div>
+    <div class="nav-label">Operations</div>
     <a href="/dashboard"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span> Dashboard</a>
-    <a href="/inteligencia"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 0-7 17M12 2a10 10 0 0 1 7 17M12 5v4M12 15v4"/></svg></span> Inteligencia</a>
-    <div class="nav-label">Administración</div>
-    <a href="/usuarios"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Usuarios</a>
-    <a class="active"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span> Auditoría</a>
+    <a href="/inteligencia"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 0-7 17M12 2a10 10 0 0 1 7 17M12 5v4M12 15v4"/></svg></span> Intelligence</a>
+    <div class="nav-label">Administration</div>
+    <a href="/usuarios"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Users</a>
+    <a class="active"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span> Audit Log</a>
   </nav>
   <div class="user-chip">
     <div class="avatar" id="avatar">··</div>
     <div class="user-meta"><div class="nm" id="u-name">—</div><div class="rl" id="u-role">—</div></div>
-    <button class="logout" id="logout" title="Salir">⏻</button>
+    <button class="logout" id="logout" title="Log out">⏻</button>
   </div>
 </aside>
 
 <main class="main">
   <div class="page-head">
     <div>
-      <h1>Auditoría del panel</h1>
-      <div class="sub">Registro de accesos y acciones sobre el panel: quién entró, desde qué IP, y qué modificó.</div>
+      <h1>Dashboard Audit Log</h1>
+      <div class="sub">Record of dashboard accesses and actions: who logged in, from which IP, and what they changed.</div>
     </div>
-    <button class="theme-btn-top" id="theme-btn" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar tema"></button>
+    <button class="theme-btn-top" id="theme-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme"></button>
   </div>
   <div class="panel">
-    <div id="tbl"><div class="loading">Cargando registro…</div></div>
+    <div id="tbl"><div class="loading">Loading log…</div></div>
   </div>
 </main>
 
@@ -118,10 +118,12 @@ function esc(s){ return String(s??"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt
 function fmtDate(s){ if(!s)return"—"; try{ return new Date(s).toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"}); }catch(e){ return s.slice(0,19); } }
 
 const ACT = {
-  login:{l:"inicio de sesión",c:"act-login"}, logout:{l:"cierre de sesión",c:"act-logout"},
-  verify_fail:{l:"código inválido",c:"act-fail"}, request_code:{l:"pidió código",c:"act-code"},
-  user_create:{l:"creó usuario",c:"act-user"}, user_patch:{l:"editó usuario",c:"act-user"},
-  user_delete:{l:"eliminó usuario",c:"act-fail"},
+  login:{l:"login",c:"act-login"}, logout:{l:"logout",c:"act-logout"},
+  verify_fail:{l:"invalid code",c:"act-fail"}, request_code:{l:"requested code",c:"act-code"},
+  user_create:{l:"created user",c:"act-user"}, user_patch:{l:"edited user",c:"act-user"},
+  user_delete:{l:"deleted user",c:"act-fail"},
+  reprocess:{l:"reprocessed alert",c:"act-user"}, reprocess_fail:{l:"reprocess failed",c:"act-fail"},
+  note_add:{l:"added note",c:"act-code"}, note_delete:{l:"deleted note",c:"act-logout"},
 };
 function actMeta(a){ return ACT[a] || {l:a,c:"act-logout"}; }
 
@@ -134,8 +136,8 @@ async function loadMe(){
 
 async function loadAudit(){
   const r = await guard(await fetch("/api/audit")); const d = await r.json();
-  if(!d.ok || !d.events.length){ $("#tbl").innerHTML=`<div class="empty">Sin eventos registrados todavía.</div>`; return; }
-  let h=`<table><thead><tr><th>Fecha</th><th>Actor</th><th>Acción</th><th>Detalle</th><th>IP</th></tr></thead><tbody>`;
+  if(!d.ok || !d.events.length){ $("#tbl").innerHTML=`<div class="empty">No events recorded yet.</div>`; return; }
+  let h=`<table><thead><tr><th>Date</th><th>Actor</th><th>Action</th><th>Detail</th><th>IP</th></tr></thead><tbody>`;
   for(const e of d.events){
     const m = actMeta(e.action);
     h += `<tr>

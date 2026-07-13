@@ -311,12 +311,12 @@ tbody tr:hover{background:var(--surface-2)}
     <div class="brand-text">Vectus <span>SOC</span></div>
   </div>
   <nav class="nav">
-    <div class="nav-label">Operación</div>
+    <div class="nav-label">Operations</div>
     <a class="active"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span> Dashboard</a>
-    <a href="/inteligencia"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 0-7 17M12 2a10 10 0 0 1 7 17M12 5v4M12 15v4"/></svg></span> Inteligencia</a>
-    <div class="nav-label">Administración</div>
-    <a href="/usuarios" id="nav-users" style="display:none"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Usuarios</a>
-    <a href="/auditoria" id="nav-audit" style="display:none"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span> Auditoría</a>
+    <a href="/inteligencia"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 0-7 17M12 2a10 10 0 0 1 7 17M12 5v4M12 15v4"/></svg></span> Intelligence</a>
+    <div class="nav-label">Administration</div>
+    <a href="/usuarios" id="nav-users" style="display:none"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Users</a>
+    <a href="/auditoria" id="nav-audit" style="display:none"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span> Audit Log</a>
   </nav>
   <div class="user-chip">
     <div class="avatar" id="avatar">··</div>
@@ -324,119 +324,119 @@ tbody tr:hover{background:var(--surface-2)}
       <div class="nm" id="u-name">—</div>
       <div class="rl" id="u-role">—</div>
     </div>
-    <button class="logout" id="logout" title="Salir">⏻</button>
+    <button class="logout" id="logout" title="Log out">⏻</button>
   </div>
 </aside>
 
 <main class="main">
   <div class="page-head">
     <div>
-      <h1>Panel de operaciones</h1>
-      <div class="sub">Triage autónomo del Vectus SOC Engine — veredictos, inteligencia y tendencia.</div>
+      <h1>Operations Dashboard</h1>
+      <div class="sub">Autonomous triage by the Vectus SOC Engine — verdicts, intelligence and trends.</div>
     </div>
     <div class="head-right">
       <div class="range-control">
         <button class="range-trigger" id="range-trigger" onclick="toggleRangePanel()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span id="range-label">Últimos 7 días</span>
+          <span id="range-label">Last 7 days</span>
           <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="range-panel" id="range-panel">
           <div class="range-col">
-            <div class="range-col-title">Rápido</div>
-            <button class="range-opt" data-r="15m">Últimos 15 minutos</button>
-            <button class="range-opt" data-r="30m">Últimos 30 minutos</button>
-            <button class="range-opt" data-r="1h">Última hora</button>
-            <button class="range-opt" data-r="3h">Últimas 3 horas</button>
-            <button class="range-opt" data-r="6h">Últimas 6 horas</button>
-            <button class="range-opt" data-r="12h">Últimas 12 horas</button>
+            <div class="range-col-title">Quick</div>
+            <button class="range-opt" data-r="15m">Last 15 minutes</button>
+            <button class="range-opt" data-r="30m">Last 30 minutes</button>
+            <button class="range-opt" data-r="1h">Last hour</button>
+            <button class="range-opt" data-r="3h">Last 3 hours</button>
+            <button class="range-opt" data-r="6h">Last 6 hours</button>
+            <button class="range-opt" data-r="12h">Last 12 hours</button>
           </div>
           <div class="range-col">
             <div class="range-col-title">&nbsp;</div>
-            <button class="range-opt" data-r="24h">Últimas 24 horas</button>
-            <button class="range-opt active" data-r="7d">Últimos 7 días</button>
-            <button class="range-opt" data-r="30d">Últimos 30 días</button>
-            <button class="range-opt" data-r="90d">Últimos 90 días</button>
-            <button class="range-opt" data-r="all">Todo el historial</button>
+            <button class="range-opt" data-r="24h">Last 24 hours</button>
+            <button class="range-opt active" data-r="7d">Last 7 days</button>
+            <button class="range-opt" data-r="30d">Last 30 days</button>
+            <button class="range-opt" data-r="90d">Last 90 days</button>
+            <button class="range-opt" data-r="all">All time</button>
           </div>
           <div class="range-custom">
-            <div class="range-col-title">Personalizado</div>
-            <label>Desde</label>
+            <div class="range-col-title">Custom</div>
+            <label>From</label>
             <input type="datetime-local" id="custom-from">
-            <label>Hasta</label>
+            <label>To</label>
             <input type="datetime-local" id="custom-to">
-            <button class="range-apply" onclick="applyCustomRange()">Aplicar rango</button>
+            <button class="range-apply" onclick="applyCustomRange()">Apply range</button>
           </div>
         </div>
       </div>
-      <button class="theme-btn-top" id="theme-btn" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar tema"></button>
-      <div class="live"><span class="dot"></span> EN VIVO · <span id="ts">—</span></div>
+      <button class="theme-btn-top" id="theme-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme"></button>
+      <div class="live"><span class="dot"></span> LIVE · <span id="ts">—</span></div>
     </div>
   </div>
 
   <div class="cards" id="cards">
-    <div class="loading">Cargando métricas…</div>
+    <div class="loading">Loading metrics…</div>
   </div>
 
   <div class="charts">
     <div class="panel">
-      <h3>Tendencia de alertas</h3>
-      <div class="ph-sub">últimos 7 días</div>
+      <h3>Alert Trend</h3>
+      <div class="ph-sub">last 7 days</div>
       <div class="chart-wrap"><canvas id="chTimeline"></canvas></div>
     </div>
     <div class="panel">
-      <h3>Distribución de veredictos</h3>
-      <div class="ph-sub">total acumulado</div>
+      <h3>Verdict Distribution</h3>
+      <div class="ph-sub">cumulative total</div>
       <div class="chart-wrap sm"><canvas id="chVerdict"></canvas></div>
     </div>
   </div>
 
   <div class="charts">
     <div class="panel">
-      <h3>Fuente del veredicto</h3>
-      <div class="ph-sub">quién decidió: regla · evidencia · analista IA</div>
+      <h3>Verdict Source</h3>
+      <div class="ph-sub">who decided: rule · evidence · AI analyst</div>
       <div class="chart-wrap sm"><canvas id="chSource"></canvas></div>
     </div>
     <div class="panel">
-      <h3>Por familia de alerta</h3>
-      <div class="ph-sub">tipo de evento normalizado</div>
+      <h3>By Alert Family</h3>
+      <div class="ph-sub">normalized event type</div>
       <div class="chart-wrap sm"><canvas id="chClass"></canvas></div>
     </div>
   </div>
 
   <div class="charts">
     <div class="panel" style="grid-column:1/-1">
-      <h3>IOCs más frecuentes en amenazas</h3>
-      <div class="ph-sub">observables que más se repiten en alertas true_positive</div>
+      <h3>Top IOCs in Threats</h3>
+      <div class="ph-sub">most frequent observables in true_positive alerts</div>
       <div id="top-iocs"><div class="loading">Cargando IOCs…</div></div>
     </div>
   </div>
 
   <div class="table-panel">
     <div class="table-head">
-      <div class="th-left"><h3>Alertas recientes</h3></div>
+      <div class="th-left"><h3>Recent Alerts</h3></div>
       <div class="filters">
-        <input id="f-search" type="text" placeholder="Buscar por ID o firma…" class="search-input">
+        <input id="f-search" type="text" placeholder="Search by ID or signature…" class="search-input">
         <select id="f-verdict">
-          <option value="">Todos los veredictos</option>
+          <option value="">All verdicts</option>
           <option value="true_positive">True positive</option>
           <option value="false_positive">False positive</option>
           <option value="informational">Informational</option>
           <option value="needs_review">Needs review</option>
         </select>
         <select id="f-class">
-          <option value="">Todas las familias</option>
+          <option value="">All families</option>
           <option value="windows_event">Windows</option>
           <option value="network">Network</option>
           <option value="syscheck_fim">FIM</option>
           <option value="apparmor">AppArmor</option>
           <option value="ossec">OSSEC</option>
-          <option value="generic">Genérica</option>
+          <option value="generic">Generic</option>
         </select>
       </div>
     </div>
     <div id="table-body">
-      <div class="loading">Cargando alertas…</div>
+      <div class="loading">Loading alerts…</div>
     </div>
     <div class="pager" id="pager" style="display:none">
       <span id="pager-info">—</span>
@@ -454,12 +454,12 @@ tbody tr:hover{background:var(--surface-2)}
   <div class="drawer-head">
     <div>
       <div class="id" id="d-id">—</div>
-      <h2 id="d-title">Detalle de alerta</h2>
+      <h2 id="d-title">Alert Detail</h2>
     </div>
     <button class="drawer-close" id="d-close">✕</button>
   </div>
   <div class="drawer-body" id="d-body">
-    <div class="loading">Cargando…</div>
+    <div class="loading">Loading…</div>
   </div>
 </aside>
 
@@ -496,8 +496,17 @@ function card(k,v,meta,dotClass){
     <div class="v">${v}</div>${meta?`<div class="meta">${meta}</div>`:""}</div>`;
 }
 
-// Estado del rango temporal
-let rangeState = { mode: "preset", value: "7d", from: "", to: "" };
+// Estado del rango temporal — se persiste en localStorage para sobrevivir al F5
+let rangeState = (function(){
+  try{
+    const saved = localStorage.getItem("vectus-range");
+    if(saved){ const s = JSON.parse(saved); if(s && s.mode) return s; }
+  }catch(e){}
+  return { mode: "preset", value: "7d", from: "", to: "" };
+})();
+function saveRangeState(){
+  try{ localStorage.setItem("vectus-range", JSON.stringify(rangeState)); }catch(e){}
+}
 
 async function loadOverview(){
   let url = "/api/overview?";
@@ -508,16 +517,16 @@ async function loadOverview(){
   }
   const r = await guard(await fetch(url));
   const d = await r.json();
-  if(!d.ok){ $("#cards").innerHTML=`<div class="empty">No se pudo leer la base del motor: ${d.error||""}</div>`; return; }
+  if(!d.ok){ $("#cards").innerHTML=`<div class="empty">Couldn't read the engine database: ${d.error||""}</div>`; return; }
   const bv = d.by_verdict||{};
   const pend = d.pending||0;
   $("#cards").innerHTML =
-    card("Total alertas", d.total_alertas.toLocaleString(), `${d.last_24h} en últimas 24h${pend?` · ${pend} en proceso`:""}`) +
-    card("True positive", (bv.true_positive||0).toLocaleString(), "casos accionables", "bg-tp") +
-    card("False positive", (bv.false_positive||0).toLocaleString(), "ruido descartado", "bg-fp") +
-    card("Informational", (bv.informational||0).toLocaleString(), "nutren la línea base", "bg-info") +
-    card("Needs review", (bv.needs_review||0).toLocaleString(), "derivadas a humano", "bg-review") +
-    card("Observables", (d.observables||0).toLocaleString(), `${d.signatures} firmas · ${d.suppressions_active} supresiones`);
+    card("Total Alerts", d.total_alertas.toLocaleString(), `${d.last_24h} in last 24h${pend?` · ${pend} processing`:""}`) +
+    card("True positive", (bv.true_positive||0).toLocaleString(), "actionable cases", "bg-tp") +
+    card("False positive", (bv.false_positive||0).toLocaleString(), "noise discarded", "bg-fp") +
+    card("Informational", (bv.informational||0).toLocaleString(), "feed the baseline", "bg-info") +
+    card("Needs review", (bv.needs_review||0).toLocaleString(), "escalated to human", "bg-review") +
+    card("Observables", (d.observables||0).toLocaleString(), `${d.signatures} signatures · ${d.suppressions_active} suppressions`);
   drawTimeline(d.timeline||[]);
   drawVerdict(bv);
   drawSource(d.by_source||{});
@@ -595,16 +604,17 @@ function drawClass(bc){
 // ---------- Tabla ----------
 let offset = 0; const LIMIT = 25; let lastTotal = 0;
 let activeSource = "";  // filtro por fuente del veredicto (drill-down), no tiene select propio
+let activeObservable = "";  // filtro por IOC/observable (click en Top IOCs)
 async function loadAlerts(){
   const v = $("#f-verdict").value, c = $("#f-class").value, q = $("#f-search").value.trim();
-  const r = await guard(await fetch(`/api/alerts?verdict=${v}&alert_class=${c}&source=${encodeURIComponent(activeSource)}&q=${encodeURIComponent(q)}&limit=${LIMIT}&offset=${offset}`));
+  const r = await guard(await fetch(`/api/alerts?verdict=${v}&alert_class=${c}&source=${encodeURIComponent(activeSource)}&observable=${encodeURIComponent(activeObservable)}&q=${encodeURIComponent(q)}&limit=${LIMIT}&offset=${offset}`));
   const d = await r.json();
-  if(!d.ok){ $("#table-body").innerHTML=`<div class="empty">Error al leer alertas</div>`; return; }
+  if(!d.ok){ $("#table-body").innerHTML=`<div class="empty">Error reading alerts</div>`; return; }
   lastTotal = d.total;
-  if(d.alerts.length===0){ $("#table-body").innerHTML=`<div class="empty">No hay alertas con esos filtros.</div>`;
+  if(d.alerts.length===0){ $("#table-body").innerHTML=`<div class="empty">No alerts match those filters.</div>`;
     $("#pager").style.display="none"; return; }
-  let html = `<table><thead><tr><th>Alert ID</th><th>Familia</th><th>Origen</th>
-    <th>Sev</th><th>Veredicto</th><th>Fecha</th></tr></thead><tbody>`;
+  let html = `<table><thead><tr><th>Alert ID</th><th>Family</th><th>Source</th>
+    <th>Sev</th><th>Verdict</th><th>Date</th></tr></thead><tbody>`;
   for(const a of d.alerts){
     const m = vMeta(a.verdict);
     html += `<tr data-id="${encodeURIComponent(a.alert_id)}">
@@ -645,10 +655,10 @@ $("#logout").addEventListener("click",async()=>{
 
 // ---------- Control de rango temporal ----------
 const RANGE_LABELS = {
-  "15m":"Últimos 15 minutos","30m":"Últimos 30 minutos","1h":"Última hora",
-  "3h":"Últimas 3 horas","6h":"Últimas 6 horas","12h":"Últimas 12 horas",
-  "24h":"Últimas 24 horas","7d":"Últimos 7 días","30d":"Últimos 30 días",
-  "90d":"Últimos 90 días","all":"Todo el historial"
+  "15m":"Last 15 minutes","30m":"Last 30 minutes","1h":"Last hour",
+  "3h":"Last 3 hours","6h":"Last 6 hours","12h":"Last 12 hours",
+  "24h":"Last 24 hours","7d":"Last 7 days","30d":"Last 30 days",
+  "90d":"Last 90 days","all":"All time"
 };
 function toggleRangePanel(){
   const wasOpen = $("#range-panel").classList.contains("open");
@@ -681,6 +691,7 @@ document.querySelectorAll(".range-opt").forEach(btn=>{
     document.querySelectorAll(".range-opt").forEach(b=>b.classList.remove("active"));
     btn.classList.add("active");
     rangeState = { mode:"preset", value:btn.dataset.r, from:"", to:"" };
+    saveRangeState();
     $("#range-label").textContent = RANGE_LABELS[btn.dataset.r] || btn.dataset.r;
     closeRangePanel();
     loadOverview(); loadTopIocs();
@@ -690,22 +701,23 @@ document.querySelectorAll(".range-opt").forEach(btn=>{
 function applyCustomRange(){
   const f = $("#custom-from").value, t = $("#custom-to").value;
   if(!f && !t){
-    alert("Elegí al menos una fecha (desde y/o hasta). Acordate de completar también la hora.");
+    alert("Pick at least one date (from and/or to). Remember to set the time too.");
     return;
   }
   // datetime-local da "YYYY-MM-DDTHH:MM" (hora local). Validar antes de convertir.
   let fromIso = "", toIso = "";
   if(f){
     const df = new Date(f);
-    if(isNaN(df.getTime())){ alert("La fecha 'Desde' no es válida."); return; }
+    if(isNaN(df.getTime())){ alert("The 'From' date is not valid."); return; }
     fromIso = df.toISOString();
   }
   if(t){
     const dt = new Date(t);
-    if(isNaN(dt.getTime())){ alert("La fecha 'Hasta' no es válida."); return; }
+    if(isNaN(dt.getTime())){ alert("The 'To' date is not valid."); return; }
     toIso = dt.toISOString();
   }
-  rangeState = { mode:"custom", value:"", from:fromIso, to:toIso };
+  rangeState = { mode:"custom", value:"", from:fromIso, to:toIso, labelFrom:f, labelTo:t };
+  saveRangeState();
   document.querySelectorAll(".range-opt").forEach(b=>b.classList.remove("active"));
   const fmt = s => s ? new Date(s).toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}) : "…";
   $("#range-label").textContent = `${fmt(f)} → ${fmt(t)}`;
@@ -721,9 +733,9 @@ document.addEventListener("click",(e)=>{
 // ---------- Drill-down: click en gráfico → filtra la tabla ----------
 function drillTo(filterType, value, label){
   // Limpiar otros filtros para que el drill sea claro
-  if(filterType === "verdict"){ $("#f-verdict").value = value; $("#f-class").value = ""; activeSource = ""; }
-  else if(filterType === "class"){ $("#f-class").value = value; $("#f-verdict").value = ""; activeSource = ""; }
-  else if(filterType === "source"){ activeSource = value; $("#f-verdict").value = ""; $("#f-class").value = ""; }
+  if(filterType === "verdict"){ $("#f-verdict").value = value; $("#f-class").value = ""; activeSource = ""; activeObservable = ""; }
+  else if(filterType === "class"){ $("#f-class").value = value; $("#f-verdict").value = ""; activeSource = ""; activeObservable = ""; }
+  else if(filterType === "source"){ activeSource = value; $("#f-verdict").value = ""; $("#f-class").value = ""; activeObservable = ""; }
   $("#f-search").value = "";
   offset = 0;
   updateDrillChip(filterType, label || value);
@@ -740,13 +752,13 @@ function updateDrillChip(filterType, label){
     const head = document.querySelector(".table-head .th-left");
     if(head) head.appendChild(chip);
   }
-  const names = {verdict:"Veredicto", class:"Familia", source:"Fuente"};
+  const names = {verdict:"Verdict", class:"Family", source:"Source", observable:"IOC"};
   chip.innerHTML = `<span class="dc-label">${names[filterType]||"Filtro"}: <b>${label}</b></span>
-    <button class="dc-clear" onclick="clearDrill()" title="Quitar filtro">✕</button>`;
+    <button class="dc-clear" onclick="clearDrill()" title="Clear filter">✕</button>`;
   chip.style.display = "inline-flex";
 }
 function clearDrill(){
-  $("#f-verdict").value = ""; $("#f-class").value = ""; activeSource = "";
+  $("#f-verdict").value = ""; $("#f-class").value = ""; activeSource = ""; activeObservable = "";
   const chip = document.getElementById("drill-chip");
   if(chip) chip.style.display = "none";
   offset = 0;
@@ -761,7 +773,7 @@ async function loadTopIocs(){
     const r = await guard(await fetch("/api/top-iocs?limit=10"));
     const d = await r.json();
     if(!d.ok || !d.iocs.length){
-      cont.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-dim);font-size:13px">Todavía no hay IOCs en alertas confirmadas como amenaza.</div>`;
+      cont.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-dim);font-size:13px">No IOCs in confirmed threats yet.</div>`;
       return;
     }
     const max = Math.max(...d.iocs.map(i=>i.c));
@@ -769,7 +781,7 @@ async function loadTopIocs(){
     for(const ioc of d.iocs){
       const w = Math.max(6, Math.round((ioc.c/max)*100));
       const ov = "ov-"+(ioc.verdict||"unknown");
-      h += `<div class="ioc-row" onclick="searchIoc('${esc(ioc.value)}')" title="Ver alertas con este IOC">
+      h += `<div class="ioc-row" data-ioc="${escAttr(ioc.value)}" title="View alerts with this IOC">
         <span class="ioc-type">${esc(ioc.type)}</span>
         <span class="ioc-val">${esc(ioc.value)}</span>
         <div class="ioc-bar-wrap"><div class="ioc-bar" style="width:${w}%"></div></div>
@@ -778,13 +790,25 @@ async function loadTopIocs(){
     }
     h += `</div>`;
     cont.innerHTML = h;
-  }catch(e){ if(e.message!=="401") cont.innerHTML=`<div style="padding:20px;color:var(--text-dim)">Error al cargar IOCs.</div>`; }
+    // Enganchar clicks: leer el valor del atributo data-ioc (preserva backslashes)
+    cont.querySelectorAll(".ioc-row").forEach(row=>{
+      row.addEventListener("click", ()=> searchIoc(row.dataset.ioc));
+    });
+  }catch(e){ if(e.message!=="401") cont.innerHTML=`<div style="padding:20px;color:var(--text-dim)">Error loading IOCs.</div>`; }
+}
+function escAttr(s){
+  return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
 function searchIoc(val){
-  $("#f-search").value = val;
+  // Filtra por observable (JOIN en el backend), no por texto en id/firma.
+  activeObservable = val;
+  $("#f-verdict").value = ""; $("#f-class").value = ""; activeSource = "";
+  $("#f-search").value = "";
   offset = 0;
+  updateDrillChip("observable", val);
   loadAlerts();
-  document.querySelector(".table-panel").scrollIntoView({behavior:"smooth",block:"start"});
+  const tp = document.querySelector(".table-panel");
+  if(tp) tp.scrollIntoView({behavior:"smooth", block:"start"});
 }
 
 // ---------- Drawer de detalle ----------
@@ -801,15 +825,15 @@ function esc(s){ return String(s??"").replace(/[&<>]/g, c=>({"&":"&amp;","<":"&l
 async function openDrawer(idEnc){
   $("#drawer").classList.add("open");
   $("#overlay").classList.add("open");
-  $("#d-body").innerHTML = `<div class="loading">Cargando…</div>`;
+  $("#d-body").innerHTML = `<div class="loading">Loading…</div>`;
   currentAlertId = decodeURIComponent(idEnc);
   try{
     const r = await guard(await fetch(`/api/alert/${idEnc}`));
     const d = await r.json();
-    if(!d.ok){ $("#d-body").innerHTML=`<div class="d-empty">No se pudo cargar: ${esc(d.error)}</div>`; return; }
+    if(!d.ok){ $("#d-body").innerHTML=`<div class="d-empty">Could not load: ${esc(d.error)}</div>`; return; }
     renderDrawer(d.alert);
     loadNotes(currentAlertId);
-  }catch(e){ if(e.message!=="401") $("#d-body").innerHTML=`<div class="d-empty">Error de conexión.</div>`; }
+  }catch(e){ if(e.message!=="401") $("#d-body").innerHTML=`<div class="d-empty">Connection error.</div>`; }
 }
 
 function renderDrawer(a){
@@ -821,9 +845,9 @@ function renderDrawer(a){
   let h = "";
 
   // Resumen
-  h += `<div class="d-section"><h4>Resumen</h4>`;
+  h += `<div class="d-section"><h4>Summary</h4>`;
   h += drow("Familia", a.alert_class);
-  h += drow("Clasificación", a.classification);
+  h += drow("Classification", a.classification);
   h += drow("Severidad (rule.level)", a.priority_score);
   h += drow("Estado", a.status);
   h += drow("Confianza", res.confidence!=null ? res.confidence+"/100" : null);
@@ -834,14 +858,14 @@ function renderDrawer(a){
   // Descripción del caso (lo que escribe el analista IA)
   const desc = res.case_description || (res.report||{}).case_description;
   if(desc){
-    h += `<div class="d-section"><h4>Análisis del caso</h4>
+    h += `<div class="d-section"><h4>Case Analysis</h4>
       <div class="d-desc">${esc(desc)}</div></div>`;
   }
 
   // MITRE
   const mitre = res.mitre || (res.report||{}).mitre || [];
   if(mitre.length){
-    h += `<div class="d-section"><h4>Técnicas MITRE ATT&CK</h4><div class="chip-row">`;
+    h += `<div class="d-section"><h4>MITRE ATT&CK Techniques</h4><div class="chip-row">`;
     mitre.forEach(t=> h += `<span class="chip mitre">${esc(t)}</span>`);
     h += `</div></div>`;
   }
@@ -849,7 +873,7 @@ function renderDrawer(a){
   // Factores clave
   const kf = res.key_factors || [];
   if(kf.length){
-    h += `<div class="d-section"><h4>Factores clave</h4><div class="chip-row" style="flex-direction:column;align-items:stretch;gap:6px">`;
+    h += `<div class="d-section"><h4>Key Factors</h4><div class="chip-row" style="flex-direction:column;align-items:stretch;gap:6px">`;
     kf.forEach(f=> h += `<div class="chip" style="text-align:left">${esc(f)}</div>`);
     h += `</div></div>`;
   }
@@ -863,23 +887,23 @@ function renderDrawer(a){
         <span class="obs-val">${esc(o.value)}</span>
         <span class="obs-v ${ov}">${esc(o.verdict||"unknown")}</span></div>`;
     });
-  }else{ h += `<div class="d-empty">Sin observables.</div>`; }
+  }else{ h += `<div class="d-empty">No observables.</div>`; }
   h += `</div>`;
 
   // Correlación
-  h += `<div class="d-section"><h4>Correlación (${a.correlations.length})</h4>`;
+  h += `<div class="d-section"><h4>Correlation (${a.correlations.length})</h4>`;
   if(a.correlations.length){
     a.correlations.forEach(c=>{
       h += `<div class="corr-item"><span class="cid">${esc(c.related_alert_id)}</span>
         <div class="crsn">${esc(c.reason)}</div></div>`;
     });
-  }else{ h += `<div class="d-empty">Sin alertas relacionadas.</div>`; }
+  }else{ h += `<div class="d-empty">No related alerts.</div>`; }
   h += `</div>`;
 
   // Próximos pasos
   const steps = res.next_steps || [];
   if(steps.length){
-    h += `<div class="d-section"><h4>Próximos pasos</h4><ol class="steps">`;
+    h += `<div class="d-section"><h4>Next Steps</h4><ol class="steps">`;
     steps.forEach(s=> h += `<li>${esc(s)}</li>`);
     h += `</ol></div>`;
   }
@@ -889,7 +913,7 @@ function renderDrawer(a){
     const rawStr = (typeof a.raw === "string") ? a.raw : JSON.stringify(a.raw, null, 2);
     h += `<div class="d-section"><h4>
       <span style="cursor:pointer;display:flex;align-items:center;gap:8px;justify-content:space-between" onclick="toggleRaw()">
-        <span>JSON crudo recibido</span>
+        <span>Raw JSON received</span>
         <span id="raw-chev" style="color:var(--text-dim);font-size:12px">▼ ver</span>
       </span></h4>
       <pre class="raw-json" id="raw-json" style="display:none">${esc(rawStr)}</pre>
@@ -898,23 +922,23 @@ function renderDrawer(a){
 
   // Acciones (reprocesar — solo admin)
   if(myRole === "admin"){
-    h += `<div class="d-section"><h4>Acciones</h4>
+    h += `<div class="d-section"><h4>Actions</h4>
       <button class="action-btn" id="btn-reprocess" onclick="reprocessAlert()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-        Reprocesar con datos actuales
+        Reprocess with current data
       </button>
-      <div class="action-hint">Re-analiza la alerta con las reglas, claves y línea base actuales. El resultado anterior se archiva versionado.</div>
+      <div class="action-hint">Re-analyzes the alert with current rules, keys and baseline. The previous result is archived and versioned.</div>
       <div id="reprocess-result"></div>
     </div>`;
   }
 
   // Notas / comentarios
-  h += `<div class="d-section"><h4>Notas del analista</h4>
+  h += `<div class="d-section"><h4>Analyst Notes</h4>
     <div class="note-add">
-      <textarea id="note-input" placeholder="Agregar una nota sobre esta alerta…" rows="2"></textarea>
-      <button class="note-send" onclick="addNote()">Agregar</button>
+      <textarea id="note-input" placeholder="Add a note about this alert…" rows="2"></textarea>
+      <button class="note-send" onclick="addNote()">Add</button>
     </div>
-    <div id="notes-list"><div class="d-empty">Cargando notas…</div></div>
+    <div id="notes-list"><div class="d-empty">Loading notes…</div></div>
   </div>`;
 
   $("#d-body").innerHTML = h;
@@ -926,24 +950,24 @@ async function reprocessAlert(){
   const btn = $("#btn-reprocess");
   const out = $("#reprocess-result");
   if(btn){ btn.disabled = true; btn.style.opacity = ".6"; }
-  out.innerHTML = `<div class="reproc-msg">Pidiendo al motor que reprocese… puede tardar unos segundos.</div>`;
+  out.innerHTML = `<div class="reproc-msg">Asking the engine to reprocess… this may take a few seconds.</div>`;
   try{
     const r = await guard(await fetch(`/api/alert/${encodeURIComponent(currentAlertId)}/reprocess`, {method:"POST"}));
     const d = await r.json();
     if(d.ok){
-      const st = d.engine_status === 202 ? "procesando (tardará un momento)" : "completado";
-      out.innerHTML = `<div class="reproc-ok">✓ Reproceso ${st}. Refrescando…</div>`;
+      const st = d.engine_status === 202 ? "processing (will take a moment)" : "completed";
+      out.innerHTML = `<div class="reproc-ok">✓ Reprocess ${st}. Refreshing…</div>`;
       // Refrescar el detalle y el dashboard tras un momento
       setTimeout(async ()=>{
         await openDrawer(encodeURIComponent(currentAlertId));
         loadOverview(); loadAlerts();
       }, d.engine_status === 202 ? 4000 : 1500);
     }else{
-      out.innerHTML = `<div class="reproc-err">✗ ${esc(d.error||"Error al reprocesar")}</div>`;
+      out.innerHTML = `<div class="reproc-err">✗ ${esc(d.error||"Error reprocessing")}</div>`;
       if(btn){ btn.disabled = false; btn.style.opacity = "1"; }
     }
   }catch(e){
-    if(e.message!=="401"){ out.innerHTML = `<div class="reproc-err">✗ Error de conexión con el motor.</div>`;
+    if(e.message!=="401"){ out.innerHTML = `<div class="reproc-err">✗ Engine connection error.</div>`;
       if(btn){ btn.disabled = false; btn.style.opacity = "1"; } }
   }
 }
@@ -955,19 +979,19 @@ async function loadNotes(alertId){
   try{
     const r = await guard(await fetch(`/api/alert/${encodeURIComponent(alertId)}/notes`));
     const d = await r.json();
-    if(!d.ok || !d.notes.length){ cont.innerHTML = `<div class="d-empty">Sin notas todavía.</div>`; return; }
+    if(!d.ok || !d.notes.length){ cont.innerHTML = `<div class="d-empty">No notes yet.</div>`; return; }
     let h = "";
     for(const n of d.notes){
       const canDel = (n.author === (window._myEmail||"")) || myRole === "admin";
       h += `<div class="note-item">
         <div class="note-meta"><span class="note-author">${esc(n.author)}</span>
           <span class="note-date">${fmtDate(n.created_at)}</span>
-          ${canDel?`<button class="note-del" onclick="delNote(${n.id})" title="Borrar">✕</button>`:""}</div>
+          ${canDel?`<button class="note-del" onclick="delNote(${n.id})" title="Delete">✕</button>`:""}</div>
         <div class="note-body">${esc(n.note)}</div>
       </div>`;
     }
     cont.innerHTML = h;
-  }catch(e){ if(e.message!=="401") cont.innerHTML=`<div class="d-empty">Error al cargar notas.</div>`; }
+  }catch(e){ if(e.message!=="401") cont.innerHTML=`<div class="d-empty">Error loading notes.</div>`; }
 }
 async function addNote(){
   const inp = $("#note-input");
@@ -978,17 +1002,17 @@ async function addNote(){
       {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({note})}));
     const d = await r.json();
     if(d.ok){ inp.value=""; loadNotes(currentAlertId); }
-    else alert(d.error||"Error al agregar la nota");
-  }catch(e){ if(e.message!=="401") alert("Error de conexión"); }
+    else alert(d.error||"Error adding note");
+  }catch(e){ if(e.message!=="401") alert("Connection error"); }
 }
 async function delNote(noteId){
-  if(!confirm("¿Borrar esta nota?")) return;
+  if(!confirm("Delete this note?")) return;
   try{
     const r = await guard(await fetch(`/api/alert/${encodeURIComponent(currentAlertId)}/notes/${noteId}`, {method:"DELETE"}));
     const d = await r.json();
     if(d.ok) loadNotes(currentAlertId);
     else alert(d.error||"Error");
-  }catch(e){ if(e.message!=="401") alert("Error de conexión"); }
+  }catch(e){ if(e.message!=="401") alert("Connection error"); }
 }
 
 function toggleRaw(){
@@ -1006,7 +1030,25 @@ function drow(lbl, val){
 }
 
 // Init
+// Restaurar la UI del rango según el estado guardado (label + botón activo)
+function restoreRangeUI(){
+  const lbl = $("#range-label");
+  if(!lbl) return;
+  if(rangeState.mode === "preset"){
+    lbl.textContent = RANGE_LABELS[rangeState.value] || rangeState.value;
+    document.querySelectorAll(".range-opt").forEach(b=>{
+      b.classList.toggle("active", b.dataset.r === rangeState.value);
+    });
+  }else if(rangeState.mode === "custom"){
+    document.querySelectorAll(".range-opt").forEach(b=>b.classList.remove("active"));
+    const fmt = s => s ? new Date(s).toLocaleString("es-AR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}) : "…";
+    // usar los timestamps ISO guardados para el label
+    lbl.textContent = `${fmt(rangeState.from)} → ${fmt(rangeState.to)}`;
+  }
+}
+
 (async()=>{
+  restoreRangeUI();
   try{ await loadMe(); await loadOverview(); await loadTopIocs(); await loadAlerts(); }
   catch(e){ /* 401 ya redirige */ }
   setInterval(loadOverview, 60000);  // refresco cada minuto

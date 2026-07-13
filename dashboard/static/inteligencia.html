@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="/static/logo_vectus.png">
-<title>Vectus SOC · Inteligencia</title>
+<title>Vectus SOC · Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -94,47 +94,47 @@ tr:last-child td{border-bottom:none}
     <div class="brand-text">Vectus <span>SOC</span></div>
   </div>
   <nav class="nav">
-    <div class="nav-label">Operación</div>
+    <div class="nav-label">Operations</div>
     <a href="/dashboard"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span> Dashboard</a>
-    <a class="active"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 0-7 17M12 2a10 10 0 0 1 7 17M12 5v4M12 15v4"/></svg></span> Inteligencia</a>
-    <div class="nav-label">Administración</div>
-    <a href="/usuarios" id="nav-users" style="display:none"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Usuarios</a>
-    <a href="/auditoria" id="nav-audit" style="display:none"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span> Auditoría</a>
+    <a class="active"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 0-7 17M12 2a10 10 0 0 1 7 17M12 5v4M12 15v4"/></svg></span> Intelligence</a>
+    <div class="nav-label">Administration</div>
+    <a href="/usuarios" id="nav-users" style="display:none"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Users</a>
+    <a href="/auditoria" id="nav-audit" style="display:none"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></span> Audit Log</a>
   </nav>
   <div class="user-chip">
     <div class="avatar" id="avatar">··</div>
     <div class="user-meta"><div class="nm" id="u-name">—</div><div class="rl" id="u-role">—</div></div>
-    <button class="logout" id="logout" title="Salir">⏻</button>
+    <button class="logout" id="logout" title="Log out">⏻</button>
   </div>
 </aside>
 
 <main class="main">
   <div class="page-head">
     <div>
-      <h1>Inteligencia del motor</h1>
-      <div class="sub">Lo que el motor aprende del entorno: las firmas de comportamiento recurrentes que forman la línea base, y el ruido suprimido que ya no genera casos.</div>
+      <h1>Engine Intelligence</h1>
+      <div class="sub">What the engine learns from the environment: the recurring behavior signatures that form the baseline, and the suppressed noise that no longer generates cases.</div>
     </div>
-    <button class="theme-btn-top" id="theme-btn" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar tema"></button>
+    <button class="theme-btn-top" id="theme-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme"></button>
   </div>
 
   <div class="tabs">
-    <div class="tab active" data-v="sig">Firmas de comportamiento</div>
-    <div class="tab" data-v="supp">Supresiones de ruido</div>
+    <div class="tab active" data-v="sig">Behavior Signatures</div>
+    <div class="tab" data-v="supp">Noise Suppressions</div>
   </div>
 
   <!-- Firmas -->
   <div class="view active" id="v-sig">
     <div class="panel">
-      <div class="hint">Cada firma es un patrón <span class="mono">activo · regla · recurso</span>. Cuanto más se repite, más nutre la línea base que el motor usa para distinguir lo normal de lo anómalo.</div>
-      <div id="sig-tbl"><div class="loading">Cargando firmas…</div></div>
+      <div class="hint">Each signature is a pattern <span class="mono">actor · rule · resource</span>. The more it repeats, the more it feeds the baseline the engine uses to tell normal from anomalous.</div>
+      <div id="sig-tbl"><div class="loading">Loading signatures…</div></div>
     </div>
   </div>
 
   <!-- Supresiones -->
   <div class="view" id="v-supp">
     <div class="panel">
-      <div class="hint">Firmas que un analista aprobó suprimir: el motor las cuenta pero no genera caso. Toda supresión queda auditada con quién la aprobó.</div>
-      <div id="supp-tbl"><div class="loading">Cargando supresiones…</div></div>
+      <div class="hint">Signatures an analyst approved to suppress: the engine counts them but generates no case. Every suppression is audited with who approved it.</div>
+      <div id="supp-tbl"><div class="loading">Loading suppressions…</div></div>
     </div>
   </div>
 </main>
@@ -154,10 +154,10 @@ async function loadMe(){
 
 async function loadSignatures(){
   const r = await guard(await fetch("/api/signatures")); const d = await r.json();
-  if(!d.ok || !d.signatures.length){ $("#sig-tbl").innerHTML=`<div class="empty">Todavía no hay firmas registradas.</div>`; return; }
+  if(!d.ok || !d.signatures.length){ $("#sig-tbl").innerHTML=`<div class="empty">No signatures registered yet.</div>`; return; }
   const max = Math.max(...d.signatures.map(s=>s.count));
-  let h=`<table><thead><tr><th>Firma de comportamiento</th><th style="width:160px">Repeticiones</th>
-    <th>Primera vez</th><th>Última vez</th><th>Estado</th></tr></thead><tbody>`;
+  let h=`<table><thead><tr><th>Behavior signature</th><th style="width:160px">Occurrences</th>
+    <th>First seen</th><th>Last seen</th><th>Status</th></tr></thead><tbody>`;
   for(const s of d.signatures){
     const w = Math.max(4, Math.round((s.count/max)*120));
     h += `<tr>
@@ -165,7 +165,7 @@ async function loadSignatures(){
       <td><div class="count-bar"><div class="bar" style="width:${w}px"></div><span class="n">${s.count}</span></div></td>
       <td class="mono" style="color:var(--text-muted)">${fmtDate(s.first_seen)}</td>
       <td class="mono" style="color:var(--text-muted)">${fmtDate(s.last_seen)}</td>
-      <td>${s.marked_noise?'<span class="pill pill-noise">ruido</span>':'<span class="pill pill-active">activa</span>'}</td>
+      <td>${s.marked_noise?'<span class="pill pill-noise">noise</span>':'<span class="pill pill-active">active</span>'}</td>
     </tr>`;
   }
   h+=`</tbody></table>`; $("#sig-tbl").innerHTML=h;
@@ -173,13 +173,13 @@ async function loadSignatures(){
 
 async function loadSuppressions(){
   const r = await guard(await fetch("/api/suppressions")); const d = await r.json();
-  if(!d.ok || !d.suppressions.length){ $("#supp-tbl").innerHTML=`<div class="empty">No hay supresiones activas. El motor está procesando todo el ruido.</div>`; return; }
-  let h=`<table><thead><tr><th>Firma suprimida</th><th>Aprobada por</th><th>Estado</th><th>Fecha</th></tr></thead><tbody>`;
+  if(!d.ok || !d.suppressions.length){ $("#supp-tbl").innerHTML=`<div class="empty">No active suppressions. The engine is processing all noise.</div>`; return; }
+  let h=`<table><thead><tr><th>Suppressed signature</th><th>Approved by</th><th>Status</th><th>Date</th></tr></thead><tbody>`;
   for(const s of d.suppressions){
     h += `<tr>
       <td class="sig">${esc(s.signature)}</td>
       <td class="mono">${esc(s.approved_by)}</td>
-      <td>${s.active?'<span class="pill pill-supp">vigente</span>':'<span class="pill" style="background:var(--surface-2);color:var(--text-dim)">revocada</span>'}</td>
+      <td>${s.active?'<span class="pill pill-supp">current</span>':'<span class="pill" style="background:var(--surface-2);color:var(--text-dim)">revoked</span>'}</td>
       <td class="mono" style="color:var(--text-muted)">${fmtDate(s.created_at)}</td>
     </tr>`;
   }

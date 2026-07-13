@@ -512,7 +512,7 @@ def api_overview(request: Request, range: str = "7d",
 
 @app.get("/api/alerts")
 def api_alerts(request: Request, verdict: str = "", alert_class: str = "",
-               source: str = "", q: str = "", limit: int = 50, offset: int = 0):
+               source: str = "", observable: str = "", q: str = "", limit: int = 50, offset: int = 0):
     """Lista de alertas con filtros y búsqueda. Para la tabla principal."""
     u, err = _require_user(request)
     if err:
@@ -528,6 +528,9 @@ def api_alerts(request: Request, verdict: str = "", alert_class: str = "",
     if source:
         where.append("json_extract(result_json,'$.internal_analysis.verdict_source') = ?")
         params.append(source)
+    if observable:
+        where.append("alert_id IN (SELECT alert_id FROM observables WHERE value = ?)")
+        params.append(observable)
     if q:
         where.append("(alert_id LIKE ? OR signature LIKE ?)")
         params.extend([f"%{q}%", f"%{q}%"])

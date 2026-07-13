@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="/static/logo_vectus.png">
-<title>Vectus SOC · Usuarios</title>
+<title>Vectus SOC · Users</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -112,52 +112,52 @@ tr:last-child td{border-bottom:none}
     <div class="brand-text">Vectus <span>SOC</span></div>
   </div>
   <nav class="nav">
-    <div class="nav-label">Operación</div>
+    <div class="nav-label">Operations</div>
     <a href="/dashboard"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span> Dashboard</a>
-    <div class="nav-label">Administración</div>
-    <a class="active"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Usuarios</a>
+    <div class="nav-label">Administration</div>
+    <a class="active"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Users</a>
   </nav>
   <div class="user-chip">
     <div class="avatar" id="avatar">··</div>
     <div class="user-meta"><div class="nm" id="u-name">—</div><div class="rl" id="u-role">—</div></div>
-    <button class="logout" id="logout" title="Salir">⏻</button>
+    <button class="logout" id="logout" title="Log out">⏻</button>
   </div>
 </aside>
 
 <main class="main">
   <div class="page-head">
     <div>
-      <h1>Gestión de usuarios</h1>
-      <div class="sub">Quién accede al panel. El acceso es por código de un solo uso al email.</div>
+      <h1>User Management</h1>
+      <div class="sub">Who can access the dashboard. Access is by one-time code sent to email.</div>
     </div>
     <div class="head-actions">
-      <button class="theme-btn-top" id="theme-btn" onclick="toggleTheme()" title="Cambiar tema" aria-label="Cambiar tema"></button>
+      <button class="theme-btn-top" id="theme-btn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme"></button>
       <button class="btn" id="btn-new">+ Nuevo usuario</button>
     </div>
   </div>
   <div class="msg" id="msg"></div>
   <div class="panel">
-    <div id="tbl"><div class="loading">Cargando usuarios…</div></div>
+    <div id="tbl"><div class="loading">Loading users…</div></div>
   </div>
 </main>
 
 <!-- Modal nuevo/editar -->
 <div class="overlay" id="overlay">
   <div class="modal">
-    <h3 id="modal-title">Nuevo usuario</h3>
+    <h3 id="modal-title">New user</h3>
     <input type="hidden" id="m-id">
     <label>Email</label>
-    <input id="m-email" type="email" placeholder="persona@vectus.la">
-    <label>Nombre</label>
-    <input id="m-name" type="text" placeholder="Nombre y apellido">
-    <label>Rol</label>
+    <input id="m-email" type="email" placeholder="person@vectus.la">
+    <label>Name</label>
+    <input id="m-name" type="text" placeholder="Full name">
+    <label>Role</label>
     <select id="m-role">
-      <option value="viewer">Viewer — solo lectura</option>
-      <option value="admin">Admin — gestiona usuarios</option>
+      <option value="viewer">Viewer — read only</option>
+      <option value="admin">Admin — manages users</option>
     </select>
     <div class="modal-actions">
-      <button class="btn btn-ghost" id="m-cancel">Cancelar</button>
-      <button class="btn" id="m-save">Guardar</button>
+      <button class="btn btn-ghost" id="m-cancel">Cancel</button>
+      <button class="btn" id="m-save">Save</button>
     </div>
   </div>
 </div>
@@ -179,9 +179,9 @@ async function loadMe(){
 
 async function loadUsers(){
   const r = await guard(await fetch("/api/users")); const d = await r.json();
-  if(!d.ok){ $("#tbl").innerHTML=`<div class="loading">Sin permiso</div>`; return; }
-  let h = `<table><thead><tr><th>Email</th><th>Nombre</th><th>Rol</th><th>Estado</th>
-    <th>Último acceso</th><th style="text-align:right">Acciones</th></tr></thead><tbody>`;
+  if(!d.ok){ $("#tbl").innerHTML=`<div class="loading">No permission</div>`; return; }
+  let h = `<table><thead><tr><th>Email</th><th>Name</th><th>Role</th><th>Status</th>
+    <th>Last access</th><th style="text-align:right">Actions</th></tr></thead><tbody>`;
   for(const u of d.users){
     h += `<tr>
       <td class="mono">${esc(u.email)}</td>
@@ -190,9 +190,9 @@ async function loadUsers(){
       <td><span class="pill ${u.active?'pill-on':'pill-off'}">${u.active?'activo':'inactivo'}</span></td>
       <td class="mono" style="color:var(--text-muted)">${u.last_login?fmtDate(u.last_login):'nunca'}</td>
       <td><div class="row-actions">
-        <button class="icon-btn" onclick='editUser(${JSON.stringify(u)})'>Editar</button>
+        <button class="icon-btn" onclick='editUser(${JSON.stringify(u)})'>Edit</button>
         <button class="icon-btn" onclick='toggleUser(${u.id},${u.active?0:1})'>${u.active?'Desactivar':'Activar'}</button>
-        <button class="icon-btn danger" onclick='delUser(${u.id},"${esc(u.email)}")'>Eliminar</button>
+        <button class="icon-btn danger" onclick='delUser(${u.id},"${esc(u.email)}")'>Delete</button>
       </div></td>
     </tr>`;
   }
@@ -220,13 +220,13 @@ $("#m-save").addEventListener("click", async ()=>{
     let r;
     if(id){ r = await fetch(`/api/users/${id}`,{method:"PATCH",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({name,role})}); }
-    else{ if(!email||!email.includes("@")){ showMsg("Email inválido","err"); return; }
+    else{ if(!email||!email.includes("@")){ showMsg("Invalid email","err"); return; }
       r = await fetch("/api/users",{method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({email,name,role})}); }
     const d = await r.json();
     if(d.ok){ closeModal(); showMsg("Guardado","ok"); loadUsers(); }
     else showMsg(d.error||"Error","err");
-  }catch(e){ showMsg("Error de conexión","err"); }
+  }catch(e){ showMsg("Connection error","err"); }
 });
 window.toggleUser = async (id,active)=>{
   const r = await fetch(`/api/users/${id}`,{method:"PATCH",headers:{"Content-Type":"application/json"},
@@ -235,7 +235,7 @@ window.toggleUser = async (id,active)=>{
   if(d.ok){ showMsg("Actualizado","ok"); loadUsers(); } else showMsg(d.error||"Error","err");
 };
 window.delUser = async (id,email)=>{
-  if(!confirm(`¿Eliminar a ${email}? Esta acción no se puede deshacer.`)) return;
+  if(!confirm(`Delete ${email}? This action cannot be undone.`)) return;
   const r = await fetch(`/api/users/${id}`,{method:"DELETE"});
   const d = await r.json();
   if(d.ok){ showMsg("Usuario eliminado","ok"); loadUsers(); } else showMsg(d.error||"Error","err");
