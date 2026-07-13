@@ -24,3 +24,9 @@ README.md.bak
 
 # Sistema
 .DS_Store
+
+# Backups con sufijos y temporales de trabajo
+*.bak-*
+*.bak_*
+extraido
+*.tmp
